@@ -28,10 +28,11 @@ OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "_work" / "cenace.db"
 
 FINAL_TABLES = ["curve_realtime", "curve_daily", "snapshots", "demand_by_company",
                 "plants_realtime", "plants_daily", "plants_daily_best", "plants_daily_wide",
-                "plants_period", "daily_summary", "period_summary"]
+                "plants_period", "daily_summary", "daily_best", "daily_compare", "period_summary"]
 TEXT_COLS = {"date", "time", "plant", "group", "company", "unit", "period", "period_type", "as_of_text",
              "scraped_at_utc", "scraped_at_local", "page_last_modified", "realtime_date", "demand_date",
-             "curve_last_time", "updated_at_local", "source"}
+             "curve_last_time", "updated_at_local", "source", "variable", "realtime_close_at",
+             "realtime_last_block"}
 
 VIEWS = {
     # Clean half-hourly series: validated value when available, otherwise the last real-time value
