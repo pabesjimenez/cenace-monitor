@@ -1,0 +1,6 @@
+debug_page.html
+_site/
+_work/
+__pycache__/
+*.tmp
+*.building
