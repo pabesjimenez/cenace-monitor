@@ -125,7 +125,7 @@ footer{color:var(--text-muted);font-size:12px;margin-top:24px}
     </div>
 
     <div class="card span-12">
-      <div class="card-head"><div><h2>Producción diaria validada por fuente (GWh)</h2><p class="card-sub">Pestaña “Información operativa diaria” · un registro por día</p></div></div>
+      <div class="card-head"><div><h2>Producción diaria por fuente (GWh)</h2><p class="card-sub" id="daily-sub">Validado por CENACE cuando está publicado; si no, cierre del día en tiempo real (barras claras)</p></div></div>
       <div class="chart"><canvas id="c-daily"></canvas></div>
     </div>
 
@@ -165,7 +165,7 @@ footer{color:var(--text-muted);font-size:12px;margin-top:24px}
 </div>
 
 <script>
-const FILES = ["curve_realtime","curve_daily","snapshots","demand_by_company","plants_daily_best","plants_daily_wide","plants_realtime","plants_daily","plants_period","daily_summary","period_summary"];
+const FILES = ["curve_realtime","curve_daily","snapshots","demand_by_company","plants_daily_best","plants_daily_wide","plants_realtime","plants_daily","plants_period","daily_best","daily_compare","daily_summary","period_summary"];
 const SOURCES = [ // fixed order = fixed color slots
   {key:"hidraulica", label:"Hidráulica",  color:"--series-1"},
   {key:"termica",    label:"Térmica",     color:"--series-2"},
@@ -321,13 +321,20 @@ function renderPlants(){
   hbar("c-plants", items, "MWh", "--series-1");
 }
 function renderDaily(){
-  const rows=[...D.daily_summary].sort((a,b)=>a.date.localeCompare(b.date)); if(!rows.length) return empty("c-daily");
+  const src=(D.daily_best&&D.daily_best.length)? D.daily_best : D.daily_summary.map(r=>({...r, source:"validado"}));
+  const rows=[...src].sort((a,b)=>a.date.localeCompare(b.date)); if(!rows.length) return empty("c-daily");
+  const alpha=r=>r.source==="validado"?"":(r.source==="tiempo_real"?"80":"40");
+  const srcLabel=r=>r.source==="validado"?"validado por CENACE":(r.source==="tiempo_real"?"cierre del día en tiempo real":"tiempo real, día incompleto");
   const keys=[["hidraulica","Hidráulica","--series-1"],["termica","Térmica","--series-2"],["no_convencional","Renovable no conv.","--series-3"],["importacion","Importación","--series-4"]];
   const o=baseOpts(); o.scales.x.stacked=true; o.scales.y.stacked=true;
   o.scales.y.ticks.callback=v=>nf0.format(v);
-  o.plugins.tooltip.callbacks={label:c=>` ${c.dataset.label}: ${nf1.format(c.parsed.y)} GWh`, footer:items=>`Total: ${nf1.format(items.reduce((s,i)=>s+i.parsed.y,0))} GWh`};
+  o.plugins.tooltip.callbacks={title:it=>fmtDate(rows[it[0].dataIndex].date), label:c=>` ${c.dataset.label}: ${nf1.format(c.parsed.y)} GWh`, footer:items=>`Total: ${nf1.format(items.reduce((s,i)=>s+i.parsed.y,0))} GWh · ${srcLabel(rows[items[0].dataIndex])}`};
   const toGWh=(r,k)=>{const v=num(r[k]); return v==null?null:(r.unit==="GWh"? v : v/1000);};
-  draw("c-daily",{type:"bar", data:{labels:rows.map(r=>fmtDate(r.date)), datasets:keys.map(([k,l,c])=>({label:l, data:rows.map(r=>toGWh(r,k)), backgroundColor:css(c), borderColor:css("--surface-1"), borderWidth:{top:2}, borderSkipped:false, maxBarThickness:48}))}, options:o});
+  draw("c-daily",{type:"bar", data:{labels:rows.map(r=>rows.length>10? r.date.slice(8,10)+"/"+r.date.slice(5,7) : fmtDate(r.date)), datasets:keys.map(([k,l,c])=>({label:l, data:rows.map(r=>toGWh(r,k)), backgroundColor:rows.map(r=>css(c)+alpha(r)), borderColor:css("--surface-1"), borderWidth:{top:2}, borderSkipped:false, maxBarThickness:48}))}, options:o});
+  const nV=rows.filter(r=>r.source==="validado").length, nR=rows.filter(r=>r.source==="tiempo_real").length, nP=rows.length-nV-nR;
+  const cmp=(D.daily_compare||[]).filter(r=>r.variable==="produccion_total" && r.realtime_last_block==="23:30" && num(r.diferencia_pct)!=null);
+  const gap=cmp.length? ` · Cierre en tiempo real vs validado: diferencia media ${nf1.format(cmp.reduce((s,r)=>s+Math.abs(num(r.diferencia_pct)),0)/cmp.length)} % (${cmp.length} ${cmp.length===1?"día":"días"})` : "";
+  document.getElementById("daily-sub").textContent=`${nV} días validados por CENACE, ${nR} con cierre del día en tiempo real (barras claras)${nP?`, ${nP} incompleto`:""}${gap}`;
 }
 
 function renderPlantDaily(){
