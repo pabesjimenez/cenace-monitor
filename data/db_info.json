@@ -1,6 +1,6 @@
 {
- "built_at_utc": "2026-10-19T03:59:25Z",
- "size_bytes": 430080,
+ "built_at_utc": "2026-10-19T04:00:02Z",
+ "size_bytes": 434176,
  "first_capture_local": "2026-10-18 22:35",
  "last_capture_local": "2026-10-18 22:35",
  "tables": {
@@ -14,6 +14,8 @@
   "plants_daily_wide": 2,
   "plants_period": 24,
   "daily_summary": 1,
+  "daily_best": 2,
+  "daily_compare": 0,
   "period_summary": 2,
   "observations": 1436,
   "captures": 1
