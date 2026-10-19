@@ -1,3 +1,4 @@
 date,source,produccion_total,hidraulica,termica,no_convencional,importacion,exportacion,sum_parts,realtime_close_at,realtime_last_block
 2026-10-16,validado,95167.0,65207.0,28580.0,480.0,900.0,37.0,95167.0,,
 2026-10-18,tiempo_real_parcial,96371.0,65803.0,29626.0,705.0,73.0,91.0,96207.0,2026-10-18 23:01,23:00
+2026-10-19,tiempo_real_parcial,15977.0,10207.0,5641.0,96.0,11.0,19.0,15955.0,2026-10-19 04:15,04:00
