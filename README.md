@@ -85,7 +85,9 @@ From then on it runs automatically at **:05 and :35 of every hour**.
 | `plants_period.csv` | Month-to-date (MWh) and year-to-date (GWh) per plant | upsert by period+plant |
 | `plants_realtime.csv` | Day-to-date MWh per plant (Coca Codo, Paute, Sopladora, Mazar…); last value of the day ≈ daily total | upsert by date+plant |
 | `plants_daily.csv` | Validated daily MWh per plant | upsert by date+plant |
-| `daily_summary.csv` | Validated daily production by source | upsert by date |
+| `daily_best.csv` | **Daily production by source with no gaps** (MWh): CENACE's validated day when the daily tab publishes it, otherwise the bot's end-of-day real-time capture. Column `source`: `validado`, `tiempo_real` (end-of-day capture reached the 23:30 block) or `tiempo_real_parcial` (incomplete, e.g. today). `sum_parts` = hidráulica + térmica + no convencional + importación | rebuilt every run |
+| `daily_compare.csv` | For days that have both: end-of-day real-time value vs validated value, difference in MWh and % | rebuilt every run |
+| `daily_summary.csv` | Validated daily production by source (only the days CENACE's daily tab showed) | upsert by date |
 | `period_summary.csv` | Month-to-date (MWh) and year-to-date (GWh) totals | upsert by period |
 | `latest.json` | Everything parsed in the last run | overwritten |
 
@@ -112,7 +114,7 @@ everything since the bot started.
 
 | Name | What it is |
 |---|---|
-| `curve_realtime`, `curve_daily`, `snapshots`, `demand_by_company`, `plants_realtime`, `plants_daily`, `daily_summary`, `period_summary` | Same as the CSV files above |
+| `curve_realtime`, `curve_daily`, `snapshots`, `demand_by_company`, `plants_*`, `daily_best`, `daily_compare`, `daily_summary`, `period_summary` | Same as the CSV files above |
 | `observations` | Every value of every capture: `captured_at_utc, captured_at_local, dataset, date, key, variable, value` |
 | `captures` | One row per bot run |
 | `v_day_close` | End-of-day values: the last capture of each day (normally the ~23:31 page with the 23:30 block). `curve_last_time` tells you if it reached 23:30 |
@@ -152,6 +154,9 @@ df = pd.read_sql("SELECT * FROM v_curve_best", sqlite3.connect("cenace.db"))
 - **End of day:** the page published at ~23:31 is the most complete version of the day. Besides the regular
   :05/:35 runs, the bot runs again at 23:45 and 23:55 (Ecuador) so that page is captured even if GitHub is late.
   The final tables always keep the latest value seen for each day / half-hour.
+- **The daily tab is irregular:** CENACE's “Información operativa diaria” lags and does not appear every day.
+  `daily_best` and `plants_daily_best` fill every day anyway with the end-of-day real-time capture, and switch to
+  the validated figure if CENACE publishes it later. `daily_compare` shows how close the two usually are.
 - **Per-plant data:** the real-time tab lists 8 hydro plants plus Térmica / Gas Natural / Renovable (whole MWh);
   the validated daily tab adds “Otras Hidro”. Real-time days are replaced by validated values automatically
   once CENACE publishes them.
