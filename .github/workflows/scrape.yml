@@ -45,7 +45,10 @@ jobs:
 
       # 1. Download the page and update data/*.csv + data/history/
       - name: Scrape CENACE
-        run: python scraper/cenace.py
+        run: |
+          # CENACE's server omits its intermediate certificate; add it to a CA bundle (verification stays on)
+          python scraper/ca_bundle.py www.cenace.gob.ec _work/ca-bundle.pem
+          REQUESTS_CA_BUNDLE=_work/ca-bundle.pem python scraper/cenace.py
 
       # 2. Rebuild the SQLite database from everything stored so far
       - name: Build database
