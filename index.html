@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monitor Eléctrico Ecuador</title>
+<meta name="description" content="Producción y demanda del Sistema Nacional Interconectado del Ecuador, capturadas cada 30 minutos desde CENACE.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f4f4f2; --surface-1:#fcfcfb; --border:#e4e3df; --grid:#ecebe7;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#7a7975;
+  --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --series-4:#eda100;
+  --ink-line:#2b2b29; --good:#0ca30c; --warning:#fab219; --critical:#d03b3b;
+  --accent-soft:#e8f0fb;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --bg:#111110; --surface-1:#1a1a19; --border:#2c2c2a; --grid:#262624;
+    --text-primary:#f0efec; --text-secondary:#c3c2b7; --text-muted:#8f8e86;
+    --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500;
+    --ink-line:#e6e5e0; --accent-soft:#1d2a3b;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#111110; --surface-1:#1a1a19; --border:#2c2c2a; --grid:#262624;
+  --text-primary:#f0efec; --text-secondary:#c3c2b7; --text-muted:#8f8e86;
+  --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500;
+  --ink-line:#e6e5e0; --accent-soft:#1d2a3b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text-primary);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.45}
+.wrap{max-width:1240px;margin:0 auto;padding:24px 16px 48px}
+header.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+h1{font-size:22px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--text-secondary);margin:0}
+.sub a{color:inherit}
+.status{display:flex;align-items:center;gap:8px;background:var(--surface-1);border:1px solid var(--border);border-radius:999px;padding:6px 14px;color:var(--text-secondary);font-size:13px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--text-muted);flex:none}
+.dot.good{background:var(--good)} .dot.warning{background:var(--warning)} .dot.critical{background:var(--critical)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.kpi .label{color:var(--text-secondary);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.kpi .value{font-size:26px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.kpi .value small{font-size:13px;font-weight:500;color:var(--text-secondary);margin-left:4px}
+.kpi .note{color:var(--text-muted);font-size:12px;margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:16px;min-width:0}
+.span-8{grid-column:span 8}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-12{grid-column:span 12}
+@media (max-width:900px){.span-8,.span-4,.span-6{grid-column:span 12}}
+.card-head{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;margin-bottom:10px}
+h2{font-size:15px;font-weight:600;margin:0}
+.card-sub{color:var(--text-muted);font-size:12px;margin:2px 0 0}
+.controls{display:flex;gap:6px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.seg button{background:transparent;border:0;color:var(--text-secondary);padding:5px 10px;font:inherit;font-size:12px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--border)}
+.seg button.on{background:var(--accent-soft);color:var(--text-primary);font-weight:600}
+select{font:inherit;font-size:12px;color:var(--text-primary);background:var(--surface-1);border:1px solid var(--border);border-radius:8px;padding:5px 8px}
+.chart{position:relative;height:320px}
+.chart.tall{height:460px}
+.empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);text-align:center;padding:16px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--text-secondary);font-weight:500;font-size:12px}
+.table-scroll{overflow-x:auto}
+.files{display:flex;flex-wrap:wrap;gap:8px}
+.files a{color:var(--text-primary);text-decoration:none;border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px}
+.files a:hover{background:var(--accent-soft)}
+.db-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.db-stats div{border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.db-stats b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+.db-stats span{color:var(--text-muted);font-size:11px}
+.btn{display:inline-block;background:var(--series-1);color:#fff;text-decoration:none;border-radius:8px;padding:8px 14px;font-weight:600;font-size:13px}
+.db p{color:var(--text-secondary);font-size:12px;margin:10px 0 0}
+footer{color:var(--text-muted);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Monitor del Sistema Eléctrico · Ecuador</h1>
+      <p class="sub">Producción y demanda del S.N.I. capturadas cada 30 minutos desde <a href="https://www.cenace.gob.ec/info-operativa/InformacionOperativa.htm" target="_blank" rel="noopener">CENACE · Información Operativa</a></p>
+    </div>
+    <div class="status" id="status"><span class="dot"></span><span>Cargando…</span></div>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="grid">
+    <div class="card span-8">
+      <div class="card-head">
+        <div><h2>Curva de generación por fuente (MW)</h2><p class="card-sub" id="curve-sub">Cada 30 minutos · tiempo real = SCADA preliminar</p></div>
+        <div class="controls">
+          <div class="seg" id="curve-src"><button data-v="rt" class="on">Tiempo real</button><button data-v="val">Validado</button></div>
+          <select id="curve-date" aria-label="Fecha"></select>
+        </div>
+      </div>
+      <div class="chart tall"><canvas id="c-curve"></canvas></div>
+    </div>
+
+    <div class="card span-4">
+      <div class="card-head"><div><h2>Demanda por distribuidora (MW)</h2><p class="card-sub" id="comp-sub"></p></div></div>
+      <div class="chart tall"><canvas id="c-comp"></canvas></div>
+    </div>
+
+    <div class="card span-8">
+      <div class="card-head">
+        <div><h2>Demanda nacional (MW)</h2><p class="card-sub">Serie histórica acumulada por el bot</p></div>
+        <div class="seg" id="dem-range"><button data-v="2">2 días</button><button data-v="7" class="on">7 días</button><button data-v="30">30 días</button><button data-v="0">Todo</button></div>
+      </div>
+      <div class="chart"><canvas id="c-dem"></canvas></div>
+    </div>
+
+    <div class="card span-4">
+      <div class="card-head"><div><h2>Centrales hidroeléctricas (MWh)</h2><p class="card-sub" id="plants-sub"></p></div></div>
+      <div class="chart"><canvas id="c-plants"></canvas></div>
+    </div>
+
+    <div class="card span-12">
+      <div class="card-head"><div><h2>Producción diaria validada por fuente (GWh)</h2><p class="card-sub">Pestaña “Información operativa diaria” · un registro por día</p></div></div>
+      <div class="chart"><canvas id="c-daily"></canvas></div>
+    </div>
+
+    <div class="card span-12">
+      <div class="card-head">
+        <div><h2>Producción diaria por central (MWh)</h2><p class="card-sub" id="pd-sub">Validado por CENACE cuando está publicado; si no, cierre del día en tiempo real</p></div>
+        <div class="controls">
+          <select id="pd-plant" aria-label="Central"></select>
+          <div class="seg" id="pd-range"><button data-v="30" class="on">30 días</button><button data-v="90">90 días</button><button data-v="0">Todo</button></div>
+        </div>
+      </div>
+      <div class="chart"><canvas id="c-pd"></canvas></div>
+    </div>
+
+    <div class="card span-6">
+      <div class="card-head"><div><h2>Acumulado mensual y anual</h2><p class="card-sub">Última versión publicada por CENACE</p></div></div>
+      <div class="table-scroll"><table id="t-period"></table></div>
+    </div>
+
+    <div class="card span-6">
+      <div class="card-head"><div><h2>Últimas capturas</h2><p class="card-sub">Una fila por ejecución del bot</p></div></div>
+      <div class="table-scroll"><table id="t-snap"></table></div>
+    </div>
+
+    <div class="card span-6">
+      <div class="card-head"><div><h2>Base de datos histórica (SQLite)</h2><p class="card-sub">Todas las capturas desde el inicio · se reconstruye en cada ejecución</p></div></div>
+      <div class="db" id="db"></div>
+    </div>
+
+    <div class="card span-6">
+      <div class="card-head"><div><h2>Descargar datos (CSV)</h2><p class="card-sub">Valores finales · el historial completo está en la base de datos</p></div></div>
+      <div class="files" id="files"></div>
+    </div>
+  </section>
+
+  <footer>Datos preliminares del SCADA de CENACE, sujetos a revisión. Este tablero se publica automáticamente con GitHub Actions; no requiere una computadora encendida.</footer>
+</div>
+
+<script>
+const FILES = ["curve_realtime","curve_daily","snapshots","demand_by_company","plants_daily_best","plants_daily_wide","plants_realtime","plants_daily","plants_period","daily_summary","period_summary"];
+const SOURCES = [ // fixed order = fixed color slots
+  {key:"hidraulica", label:"Hidráulica",  color:"--series-1"},
+  {key:"termica",    label:"Térmica",     color:"--series-2"},
+  {key:"renovable",  label:"Renovable",   color:"--series-3"},
+  {key:"importacion",label:"Importación", color:"--series-4"},
+];
+const D = {}; const charts = {};
+const state = {curveSrc:"rt", curveDate:null, demRange:7, pdPlant:null, pdRange:30};
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const nf0 = new Intl.NumberFormat("es-EC",{maximumFractionDigits:0});
+const nf1 = new Intl.NumberFormat("es-EC",{maximumFractionDigits:1});
+const num = v => (v===""||v==null||isNaN(+v)) ? null : +v;
+const fmtDate = d => { if(!d) return "—"; const [y,m,dd]=d.split("-"); return new Date(+y,+m-1,+dd).toLocaleDateString("es-EC",{weekday:"short",day:"numeric",month:"short",year:"numeric"}); };
+
+function parseCSV(text){
+  const rows=[]; let row=[], f="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+    else if(c==='"') q=true;
+    else if(c===','){ row.push(f); f=""; }
+    else if(c==='\n'){ row.push(f.replace(/\r$/,"")); rows.push(row); row=[]; f=""; }
+    else f+=c;
+  }
+  if(f!==""||row.length){ row.push(f); rows.push(row); }
+  const [h,...body]=rows; if(!h) return [];
+  return body.filter(r=>r.length>1).map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]??""])));
+}
+async function load(){
+  const bust = "?t="+Date.now();
+  await Promise.all(FILES.map(async f=>{
+    try{ const r=await fetch(`data/${f}.csv${bust}`,{cache:"no-store"}); D[f]= r.ok ? parseCSV(await r.text()) : []; }
+    catch(e){ D[f]=[]; }
+  }));
+  try{ const r=await fetch(`data/db_info.json${bust}`,{cache:"no-store"}); D.db_info = r.ok ? await r.json() : null; } catch(e){ D.db_info=null; }
+}
+
+function baseOpts(extra={}){
+  const grid=css("--grid"), muted=css("--text-muted"), sec=css("--text-secondary");
+  return Object.assign({
+    responsive:true, maintainAspectRatio:false, animation:false,
+    interaction:{mode:"index", intersect:false},
+    plugins:{
+      legend:{position:"top", align:"start", labels:{color:sec, boxWidth:10, boxHeight:10, usePointStyle:true, pointStyle:"rectRounded", font:{family:"Inter",size:12}}},
+      tooltip:{backgroundColor:css("--surface-1"), titleColor:css("--text-primary"), bodyColor:sec, borderColor:css("--border"), borderWidth:1, padding:10, titleFont:{family:"Inter",weight:"600"}, bodyFont:{family:"Inter"}, boxPadding:4, usePointStyle:true}
+    },
+    scales:{
+      x:{grid:{display:false}, border:{color:grid}, ticks:{color:muted, font:{family:"Inter",size:11}, maxRotation:0, autoSkipPadding:14}},
+      y:{grid:{color:grid}, border:{display:false}, ticks:{color:muted, font:{family:"Inter",size:11}, callback:v=>nf0.format(v)}, beginAtZero:true}
+    }
+  }, extra);
+}
+function draw(id, cfg){
+  if(charts[id]) charts[id].destroy();
+  const canvas=document.getElementById(id);
+  const box=canvas.parentElement; box.querySelector(".empty")?.remove(); canvas.style.display="";
+  charts[id]=new Chart(canvas, cfg);
+}
+function empty(id, msg){
+  if(charts[id]){ charts[id].destroy(); delete charts[id]; }
+  const canvas=document.getElementById(id); canvas.style.display="none";
+  const box=canvas.parentElement; if(!box.querySelector(".empty")){ const d=document.createElement("div"); d.className="empty"; box.appendChild(d); }
+  box.querySelector(".empty").textContent = msg || "Aún no hay datos. El bot los irá acumulando cada 30 minutos.";
+}
+
+// ---------------------------------------------------------------- KPIs & status
+function renderStatus(){
+  const el=document.getElementById("status"); const s=D.snapshots.at(-1);
+  if(!s){ el.innerHTML='<span class="dot warning"></span><span>Sin capturas todavía</span>'; return; }
+  const t=new Date(s.scraped_at_utc); const mins=Math.round((Date.now()-t)/60000);
+  const cls = mins<=75 ? "good" : mins<=180 ? "warning" : "critical";
+  const label = cls==="good" ? "Al día" : cls==="warning" ? "Retrasado" : "Detenido";
+  const ago = mins<60 ? `hace ${mins} min` : mins<1440 ? `hace ${Math.round(mins/60)} h` : `hace ${Math.round(mins/1440)} d`;
+  el.innerHTML=`<span class="dot ${cls}"></span><span><b>${label}</b> · última captura ${s.scraped_at_local} (${ago})</span>`;
+}
+function renderKPIs(){
+  const s=D.snapshots.at(-1)||{};
+  const prod=num(s.produccion_total_mwh), hid=num(s.hidraulica_mwh), ter=num(s.termica_mwh);
+  const dem=num(s.last_demanda_nacional_mw);
+  const day=D.curve_realtime.filter(r=>r.date===s.realtime_date && num(r.demanda_nacional_mw)!=null);
+  const delta = day.length>1 ? num(day.at(-1).demanda_nacional_mw)-num(day.at(-2).demanda_nacional_mw) : null;
+  const tiles=[
+    {label:"Demanda nacional", value:dem!=null?nf0.format(dem):"—", unit:"MW", note: s.curve_last_time ? `Bloque ${s.curve_last_time}${delta!=null?` · ${delta>=0?"▲":"▼"} ${nf0.format(Math.abs(delta))} MW vs. bloque anterior`:""}` : ""},
+    {label:"Demanda distribuidoras", value:num(s.demanda_total_mw)!=null?nf0.format(num(s.demanda_total_mw)):"—", unit:"MW", note: num(s.demanda_cnel_mw)!=null?`CNEL ${nf0.format(num(s.demanda_cnel_mw))} · Empresas ${nf0.format(num(s.demanda_empresas_mw))}`:""},
+    {label:"Producción del día", value:prod!=null?nf0.format(prod):"—", unit:"MWh", note:s.realtime_date?`Acumulado ${fmtDate(s.realtime_date)}`:""},
+    {label:"Participación hidráulica", value:(prod&&hid!=null)?nf1.format(hid/prod*100):"—", unit:"%", note:hid!=null?`${nf0.format(hid)} MWh`:""},
+    {label:"Térmica", value:ter!=null?nf0.format(ter):"—", unit:"MWh", note:(prod&&ter!=null)?`${nf1.format(ter/prod*100)} % del día`:""},
+    {label:"Importación / Exportación", value: s.importacion_mwh!==undefined ? `${nf0.format(num(s.importacion_mwh)||0)} / ${nf0.format(num(s.exportacion_mwh)||0)}` : "—", unit:"MWh", note:"Acumulado del día"},
+  ];
+  document.getElementById("kpis").innerHTML = tiles.map(t=>`<div class="kpi"><div class="label">${t.label}</div><div class="value">${t.value}<small>${t.unit}</small></div><div class="note">${t.note}</div></div>`).join("");
+}
+
+// ---------------------------------------------------------------- charts
+function renderCurve(){
+  const rows = state.curveSrc==="rt" ? D.curve_realtime : D.curve_daily;
+  const dates=[...new Set(rows.map(r=>r.date))].sort().reverse();
+  const sel=document.getElementById("curve-date");
+  if(!dates.includes(state.curveDate)) state.curveDate=dates[0]||null;
+  sel.innerHTML=dates.map(d=>`<option value="${d}" ${d===state.curveDate?"selected":""}>${fmtDate(d)}</option>`).join("");
+  if(!state.curveDate) return empty("c-curve");
+  const day=rows.filter(r=>r.date===state.curveDate);
+  const labels=day.map(r=>r.time);
+  const datasets=SOURCES.map(s=>({label:s.label, data:day.map(r=>num(r[s.key+"_mw"])), backgroundColor:css(s.color), borderColor:css("--surface-1"), borderWidth:1, fill:true, stack:"gen", pointRadius:0, pointHitRadius:8, tension:.25}));
+  datasets.push({label:"Demanda nacional", data:day.map(r=>num(r.demanda_nacional_mw)), borderColor:css("--ink-line"), backgroundColor:css("--ink-line"), borderWidth:2, borderDash:[5,4], fill:false, stack:"dem", pointRadius:0, pointHoverRadius:4, tension:.25, order:-1});
+  const o=baseOpts();
+  o.plugins.legend.labels.sort=(a,b)=>a.datasetIndex-b.datasetIndex;
+  o.scales.y.stacked=true; o.scales.x.stacked=true;
+  o.plugins.tooltip.callbacks={label:c=>` ${c.dataset.label}: ${c.parsed.y==null?"—":nf0.format(c.parsed.y)} MW`};
+  draw("c-curve",{type:"line", data:{labels, datasets}, options:o});
+}
+function renderDemand(){
+  const rows=D.curve_realtime.filter(r=>num(r.demanda_nacional_mw)!=null);
+  if(!rows.length) return empty("c-dem");
+  let pts=rows.map(r=>({t:`${r.date} ${r.time}`, y:num(r.demanda_nacional_mw)}));
+  if(state.demRange>0){
+    const last=new Date(pts.at(-1).t.replace(" ","T")); const from=new Date(last-state.demRange*86400000);
+    pts=pts.filter(p=>new Date(p.t.replace(" ","T"))>from);
+  }
+  const multiDay = new Set(pts.map(p=>p.t.slice(0,10))).size>1;
+  const o=baseOpts(); o.scales.y.beginAtZero=false; o.plugins.legend.display=false;
+  const nDays = new Set(pts.map(p=>p.t.slice(0,10))).size;
+  o.scales.x.ticks.autoSkip = !multiDay;
+  o.scales.x.ticks.callback=function(v){ const l=this.getLabelForValue(v), hm=l.slice(11);
+    if(!multiDay) return hm;
+    const dd=l.slice(8,10)+"/"+l.slice(5,7);
+    if(hm==="00:00" && (nDays<=10 || +l.slice(8,10)%Math.ceil(nDays/10)===0)) return dd;
+    if(nDays<=3 && ["06:00","12:00","18:00"].includes(hm)) return hm;
+    return null; };
+  o.plugins.tooltip.callbacks={label:c=>` Demanda: ${nf0.format(c.parsed.y)} MW`};
+  draw("c-dem",{type:"line", data:{labels:pts.map(p=>p.t), datasets:[{label:"Demanda nacional", data:pts.map(p=>p.y), borderColor:css("--series-1"), backgroundColor:css("--series-1"), borderWidth:2, pointRadius:0, pointHoverRadius:4, pointHitRadius:8, tension:.25}]}, options:o});
+}
+function hbar(id, items, unit, color){
+  const o=baseOpts({indexAxis:"y"});
+  o.interaction={mode:"nearest", axis:"y", intersect:false};
+  o.plugins.legend.display=false;
+  o.scales.x.grid={color:css("--grid")}; o.scales.x.ticks.callback=v=>nf0.format(v);
+  o.scales.y={grid:{display:false}, border:{display:false}, ticks:{color:css("--text-secondary"), font:{family:"Inter",size:11}, autoSkip:false}};
+  o.plugins.tooltip.callbacks={label:c=>` ${nf1.format(c.parsed.x)} ${unit}`};
+  draw(id,{type:"bar", data:{labels:items.map(i=>i[0]), datasets:[{data:items.map(i=>i[1]), backgroundColor:css(color), borderRadius:4, borderSkipped:"start", barPercentage:.75, categoryPercentage:.9}]}, options:o});
+}
+function renderCompanies(){
+  const rows=D.demand_by_company; if(!rows.length) return empty("c-comp");
+  const lastT=rows.at(-1).scraped_at_utc;
+  const items=rows.filter(r=>r.scraped_at_utc===lastT).map(r=>[r.company, num(r.mw)]).sort((a,b)=>b[1]-a[1]);
+  document.getElementById("comp-sub").textContent=`Captura ${rows.at(-1).scraped_at_local}`;
+  hbar("c-comp", items, "MW", "--series-1");
+}
+function renderPlants(){
+  const rows=D.plants_realtime.filter(r=>r.group==="hidro"); if(!rows.length) return empty("c-plants");
+  const last=rows.map(r=>r.date).sort().at(-1);
+  const items=rows.filter(r=>r.date===last).map(r=>[r.plant, num(r.mwh)]).sort((a,b)=>b[1]-a[1]);
+  document.getElementById("plants-sub").textContent=`Acumulado del ${fmtDate(last)}`;
+  hbar("c-plants", items, "MWh", "--series-1");
+}
+function renderDaily(){
+  const rows=[...D.daily_summary].sort((a,b)=>a.date.localeCompare(b.date)); if(!rows.length) return empty("c-daily");
+  const keys=[["hidraulica","Hidráulica","--series-1"],["termica","Térmica","--series-2"],["no_convencional","Renovable no conv.","--series-3"],["importacion","Importación","--series-4"]];
+  const o=baseOpts(); o.scales.x.stacked=true; o.scales.y.stacked=true;
+  o.scales.y.ticks.callback=v=>nf0.format(v);
+  o.plugins.tooltip.callbacks={label:c=>` ${c.dataset.label}: ${nf1.format(c.parsed.y)} GWh`, footer:items=>`Total: ${nf1.format(items.reduce((s,i)=>s+i.parsed.y,0))} GWh`};
+  const toGWh=(r,k)=>{const v=num(r[k]); return v==null?null:(r.unit==="GWh"? v : v/1000);};
+  draw("c-daily",{type:"bar", data:{labels:rows.map(r=>fmtDate(r.date)), datasets:keys.map(([k,l,c])=>({label:l, data:rows.map(r=>toGWh(r,k)), backgroundColor:css(c), borderColor:css("--surface-1"), borderWidth:{top:2}, borderSkipped:false, maxBarThickness:48}))}, options:o});
+}
+
+function renderPlantDaily(){
+  const rows=D.plants_daily_best||[]; if(!rows.length) return empty("c-pd");
+  const sel=document.getElementById("pd-plant");
+  const totals={}; rows.forEach(r=>totals[r.plant]=(totals[r.plant]||0)+(num(r.mwh)||0));
+  const hidro=[...new Set(rows.filter(r=>r.group==="hidro").map(r=>r.plant))].sort((a,b)=>totals[b]-totals[a]);
+  const otra=[...new Set(rows.filter(r=>r.group!=="hidro").map(r=>r.plant))].sort((a,b)=>totals[b]-totals[a]);
+  if(!state.pdPlant || !totals.hasOwnProperty(state.pdPlant)) state.pdPlant = hidro.find(p=>!/otras/i.test(p)) || hidro[0] || otra[0];
+  sel.innerHTML=`<optgroup label="Hidroeléctricas">${hidro.map(p=>`<option ${p===state.pdPlant?"selected":""}>${p}</option>`).join("")}</optgroup>`+
+                `<optgroup label="Otra generación">${otra.map(p=>`<option ${p===state.pdPlant?"selected":""}>${p}</option>`).join("")}</optgroup>`;
+  let pr=rows.filter(r=>r.plant===state.pdPlant).sort((a,b)=>a.date.localeCompare(b.date));
+  if(state.pdRange>0 && pr.length){ const last=new Date(pr.at(-1).date); pr=pr.filter(r=>(last-new Date(r.date))/86400000 < state.pdRange); }
+  const solid=css("--series-1");
+  const o=baseOpts(); o.plugins.legend.display=false;
+  o.plugins.tooltip.callbacks={title:it=>fmtDate(pr[it[0].dataIndex].date), label:c=>` ${nf0.format(c.parsed.y)} MWh · ${pr[c.dataIndex].source==="validado"?"validado":"tiempo real (cierre del día)"}`};
+  o.scales.x.ticks.callback=function(v){ const d=pr[v]?.date; return d? d.slice(8,10)+"/"+d.slice(5,7) : ""; };
+  draw("c-pd",{type:"bar", data:{labels:pr.map(r=>r.date), datasets:[{label:state.pdPlant, data:pr.map(r=>num(r.mwh)),
+    backgroundColor:pr.map(r=>r.source==="validado"? solid : solid+"66"), borderColor:solid, borderWidth:pr.map(r=>r.source==="validado"?0:1),
+    borderRadius:4, borderSkipped:"start", maxBarThickness:28}]}, options:o});
+  const nV=pr.filter(r=>r.source==="validado").length;
+  document.getElementById("pd-sub").textContent=`${state.pdPlant} · ${pr.length} días (${nV} validados, ${pr.length-nV} cierre en tiempo real — barras claras)`;
+}
+
+// ---------------------------------------------------------------- tables
+function renderTables(){
+  const p=D.period_summary;
+  document.getElementById("t-period").innerHTML = p.length ? `<thead><tr><th>Periodo</th><th>Total</th><th>Hidráulica</th><th>Térmica</th><th>No conv.</th><th>Import.</th><th>Export.</th></tr></thead><tbody>${
+    p.map(r=>`<tr><td>${r.period_type==="monthly"?"Mes":"Año"} · ${r.as_of_text}</td>${["produccion_total","hidraulica","termica","no_convencional","importacion","exportacion"].map(k=>`<td>${num(r[k])==null?"—":nf0.format(num(r[k]))}</td>`).join("")}</tr><tr><td colspan="7" style="text-align:left;color:var(--text-muted);font-size:11px;border-bottom:1px solid var(--border)">Unidad: ${r.unit} · actualizado ${r.updated_at_local}</td></tr>`).join("")}</tbody>` : `<tbody><tr><td>Sin datos todavía</td></tr></tbody>`;
+  const s=D.snapshots.slice(-8).reverse();
+  document.getElementById("t-snap").innerHTML = s.length ? `<thead><tr><th>Captura</th><th>Demanda MW</th><th>Producción día MWh</th><th>Hidráulica MWh</th><th>Térmica MWh</th></tr></thead><tbody>${
+    s.map(r=>`<tr><td>${r.scraped_at_local}</td><td>${num(r.demanda_total_mw)==null?"—":nf0.format(r.demanda_total_mw)}</td><td>${num(r.produccion_total_mwh)==null?"—":nf0.format(r.produccion_total_mwh)}</td><td>${num(r.hidraulica_mwh)==null?"—":nf0.format(r.hidraulica_mwh)}</td><td>${num(r.termica_mwh)==null?"—":nf0.format(r.termica_mwh)}</td></tr>`).join("")}</tbody>` : `<tbody><tr><td>Sin capturas todavía</td></tr></tbody>`;
+  document.getElementById("files").innerHTML = FILES.map(f=>`<a href="data/${f}.csv" download>${f}.csv · ${D[f].length} filas</a>`).join("") + `<a href="data/latest.json">latest.json</a>`;
+}
+
+function repoInfo(){
+  const h=location.hostname; if(!h.endsWith(".github.io")) return null;
+  const owner=h.split(".")[0]; const seg=location.pathname.split("/").filter(Boolean)[0];
+  const repo = (seg && !seg.endsWith(".html")) ? seg : h;
+  return {owner, repo, url:`https://github.com/${owner}/${repo}`};
+}
+function renderDB(){
+  const el=document.getElementById("db"); const i=D.db_info; const r=repoInfo();
+  if(!i){ el.innerHTML='<p>La base de datos se creará en la primera ejecución del bot.</p>'; return; }
+  const mb=(i.size_bytes/1e6).toLocaleString("es-EC",{maximumFractionDigits:1});
+  const link = r ? `${r.url}/releases/download/database/cenace.db` : "#";
+  el.innerHTML=`<div class="db-stats">
+      <div><b>${nf0.format(i.tables.captures||0)}</b><span>capturas</span></div>
+      <div><b>${nf0.format(i.tables.observations||0)}</b><span>valores registrados</span></div>
+      <div><b>${mb} MB</b><span>tamaño</span></div></div>
+    ${i.revisions ? `<p style="margin:0 0 12px">Correcciones de CENACE detectadas: <b>${nf0.format(i.revisions.revised_values)}</b> de ${nf0.format(i.revisions.realtime_values)} valores semihorarios${i.revisions.revised_values?` (cambio máximo ${nf1.format(i.revisions.max_abs_change_mw)} MW)`:""}.</p>` : ""}
+    <a class="btn" href="${link}">Descargar cenace.db</a>
+    <p>Desde ${i.first_capture_local||"—"} hasta ${i.last_capture_local||"—"}. Tablas finales + <code>observations</code> (cada valor de cada captura) y vistas <code>v_day_close</code>, <code>v_curve_best</code>, <code>v_curve_revisions</code>, <code>v_company_demand</code>. Ábrala con DB Browser for SQLite, Python o Power BI.${r?` Páginas originales diarias: <a href="${r.url}/releases" style="color:inherit">Releases</a>.`:""}</p>`;
+}
+function renderAll(){ renderStatus(); renderKPIs(); renderCurve(); renderDemand(); renderCompanies(); renderPlants(); renderDaily(); renderPlantDaily(); renderTables(); renderDB(); }
+
+document.getElementById("curve-src").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; state.curveSrc=b.dataset.v; state.curveDate=null; [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b)); renderCurve(); });
+document.getElementById("curve-date").addEventListener("change",e=>{ state.curveDate=e.target.value; renderCurve(); });
+document.getElementById("dem-range").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; state.demRange=+b.dataset.v; [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b)); renderDemand(); });
+document.getElementById("pd-plant").addEventListener("change",e=>{ state.pdPlant=e.target.value; renderPlantDaily(); });
+document.getElementById("pd-range").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; state.pdRange=+b.dataset.v; [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b)); renderPlantDaily(); });
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>renderAll());
+
+(async function init(){
+  if(!window.Chart){ document.getElementById("status").innerHTML='<span class="dot critical"></span><span>No se pudo cargar la librería de gráficos</span>'; return; }
+  Chart.defaults.font.family="Inter, system-ui, sans-serif";
+  await load(); renderAll();
+  setInterval(async()=>{ await load(); renderAll(); }, 5*60*1000); // refresh every 5 min
+})();
+</script>
+</body>
+</html>
