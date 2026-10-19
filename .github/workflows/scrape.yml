@@ -1,0 +1,109 @@
+name: Scrape CENACE and publish dashboard
+
+on:
+  schedule:
+    # Every 30 minutes (UTC). CENACE regenerates the page around :01 and :31,
+    # so we run at :05 and :35. GitHub may start scheduled runs a few minutes late.
+    - cron: "5,35 * * * *"
+    # Extra runs at 23:45 and 23:55 Ecuador time (04:45/04:55 UTC): the page published at ~23:31
+    # holds the complete day (last block 23:30). If GitHub delays the :35 run past midnight,
+    # these make sure the end-of-day values are still captured before CENACE resets the page.
+    - cron: "45,55 4 * * *"
+  workflow_dispatch: {}          # "Run workflow" button in the Actions tab
+  push:
+    branches: [main]
+    paths-ignore: ["data/**"]    # re-deploy when you edit the code or dashboard
+
+permissions:
+  contents: write   # commit the new data + update the database release
+  pages: write      # publish the dashboard
+  id-token: write
+
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # 1. Download the page and update data/*.csv + data/history/
+      - name: Scrape CENACE
+        run: python scraper/cenace.py
+
+      # 2. Rebuild the SQLite database from everything stored so far
+      - name: Build database
+        run: python scraper/build_db.py _work/cenace.db
+
+      # 3. Save the data in the repository (permanent history)
+      - name: Commit new data
+        run: |
+          git config user.name  "cenace-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "No changes in data."
+          else
+            git commit -m "data: $(TZ=America/Guayaquil date +'%Y-%m-%d %H:%M') (Ecuador)"
+            git pull --rebase --autostash
+            git push
+          fi
+
+      # 4. Publish cenace.db as a downloadable file (GitHub Releases, tag "database")
+      - name: Publish database
+        continue-on-error: true   # the data is already safe in git; the next run retries
+        run: |
+          gh release view database >/dev/null 2>&1 || \
+            gh release create database --latest=false --title "CENACE database (auto-updated)" \
+              --notes "SQLite database rebuilt by the bot every 30 minutes. Download cenace.db below."
+          gh release upload database _work/cenace.db --clobber
+
+      # 5. Keep a copy of the original CENACE page of each day (last version of the day)
+      - name: Archive raw page
+        continue-on-error: true
+        run: |
+          Y=$(TZ=America/Guayaquil date +%Y); D=$(TZ=America/Guayaquil date +%F)
+          gh release view "raw-$Y" >/dev/null 2>&1 || \
+            gh release create "raw-$Y" --latest=false --title "Raw CENACE pages $Y" \
+              --notes "Original HTML of the CENACE page, one file per day (last version captured that day)."
+          gzip -c _work/page.html > "_work/cenace-$D.html.gz"
+          gh release upload "raw-$Y" "_work/cenace-$D.html.gz" --clobber
+
+      - name: Upload page HTML if parsing failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-page
+          path: debug_page.html
+          if-no-files-found: ignore
+          retention-days: 7
+
+      # 6. Publish the dashboard (GitHub Pages)
+      - name: Build site
+        run: |
+          mkdir -p _site/data
+          cp index.html _site/
+          cp data/*.csv data/*.json _site/data/
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
