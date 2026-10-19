@@ -11,6 +11,18 @@ date,plant,group,mwh,source
 2026-10-16,Gas Natural,otra,3122.0,validado
 2026-10-16,Renovable,otra,480.0,validado
 2026-10-16,Térmica,otra,25458.0,validado
+2026-10-17,Agoyán,hidro,2169.0,validado
+2026-10-17,Coca Codo,hidro,19560.0,validado
+2026-10-17,Delsitanisagua,hidro,2989.0,validado
+2026-10-17,Mazar,hidro,1280.0,validado
+2026-10-17,Minas San Francisco,hidro,1378.0,validado
+2026-10-17,Otras Hidro,hidro,21099.0,validado
+2026-10-17,Paute,hidro,9568.0,validado
+2026-10-17,San Francisco,hidro,3027.0,validado
+2026-10-17,Sopladora,hidro,5586.0,validado
+2026-10-17,Gas Natural,otra,3135.0,validado
+2026-10-17,Renovable,otra,805.0,validado
+2026-10-17,Térmica,otra,25945.0,validado
 2026-10-18,Agoyán,hidro,2073.0,tiempo_real
 2026-10-18,Coca Codo,hidro,17868.0,tiempo_real
 2026-10-18,Delsitanisagua,hidro,2451.0,tiempo_real
@@ -22,14 +34,14 @@ date,plant,group,mwh,source
 2026-10-18,Gas Natural,otra,3064.0,tiempo_real
 2026-10-18,Renovable,otra,705.0,tiempo_real
 2026-10-18,Térmica,otra,26563.0,tiempo_real
-2026-10-19,Agoyán,hidro,998.0,tiempo_real
-2026-10-19,Coca Codo,hidro,8686.0,tiempo_real
-2026-10-19,Delsitanisagua,hidro,1166.0,tiempo_real
-2026-10-19,Mazar,hidro,813.0,tiempo_real
-2026-10-19,Minas San Francisco,hidro,385.0,tiempo_real
-2026-10-19,Paute,hidro,2054.0,tiempo_real
-2026-10-19,San Francisco,hidro,1357.0,tiempo_real
-2026-10-19,Sopladora,hidro,1215.0,tiempo_real
-2026-10-19,Gas Natural,otra,1596.0,tiempo_real
-2026-10-19,Renovable,otra,214.0,tiempo_real
-2026-10-19,Térmica,otra,13266.0,tiempo_real
+2026-10-19,Agoyán,hidro,1375.0,tiempo_real
+2026-10-19,Coca Codo,hidro,12073.0,tiempo_real
+2026-10-19,Delsitanisagua,hidro,1775.0,tiempo_real
+2026-10-19,Mazar,hidro,1212.0,tiempo_real
+2026-10-19,Minas San Francisco,hidro,703.0,tiempo_real
+2026-10-19,Paute,hidro,5203.0,tiempo_real
+2026-10-19,San Francisco,hidro,1912.0,tiempo_real
+2026-10-19,Sopladora,hidro,3080.0,tiempo_real
+2026-10-19,Gas Natural,otra,2153.0,tiempo_real
+2026-10-19,Renovable,otra,401.0,tiempo_real
+2026-10-19,Térmica,otra,18247.0,tiempo_real
