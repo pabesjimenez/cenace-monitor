@@ -23,7 +23,7 @@ from pathlib import Path
 
 import certifi
 from cryptography import x509
-from cryptography.hazmat.primitives.serialization import Encoding
+from cryptography.hazmat.primitives.serialization import Encoding, pkcs7
 from cryptography.x509.oid import AuthorityInformationAccessOID, ExtensionOID
 
 
@@ -37,32 +37,46 @@ def verifies(host: str, port: int, cafile: str) -> bool:
         return False
 
 
-def chase_intermediates(host: str, port: int, max_depth: int = 4) -> list[str]:
-    """Follow the AIA 'CA Issuers' links from the server certificate upwards."""
+def load_certs(data: bytes) -> list:
+    """AIA downloads come as DER, PEM or PKCS#7 (.p7c) — accept all of them."""
+    for loader in (lambda d: [x509.load_der_x509_certificate(d)],
+                   lambda d: x509.load_pem_x509_certificates(d),
+                   lambda d: pkcs7.load_der_pkcs7_certificates(d),
+                   lambda d: pkcs7.load_pem_pkcs7_certificates(d)):
+        try:
+            certs = loader(data)
+            if certs:
+                return certs
+        except Exception:
+            pass
+    raise ValueError("unrecognised certificate format")
+
+
+def chase_intermediates(host: str, port: int, max_depth: int = 4):
+    """Follow the AIA 'CA Issuers' links from the server certificate upwards (yields PEM blocks)."""
     pem = ssl.get_server_certificate((host, port), timeout=30)
     cert = x509.load_pem_x509_certificate(pem.encode())
-    chain = []
     for _ in range(max_depth):
         if cert.issuer == cert.subject:  # reached a self-signed root
-            break
+            return
         try:
             aia = cert.extensions.get_extension_for_oid(ExtensionOID.AUTHORITY_INFORMATION_ACCESS).value
         except x509.ExtensionNotFound:
-            break
+            return
         urls = [d.access_location.value for d in aia
                 if d.access_method == AuthorityInformationAccessOID.CA_ISSUERS]
         if not urls:
-            break
-        with urllib.request.urlopen(urls[0], timeout=30) as resp:
-            data = resp.read()
+            return
         try:
-            issuer = x509.load_der_x509_certificate(data)
-        except ValueError:
-            issuer = x509.load_pem_x509_certificate(data)
-        print(f"  downloaded intermediate: {issuer.subject.rfc4514_string()}  (from {urls[0]})")
-        chain.append(issuer.public_bytes(Encoding.PEM).decode())
-        cert = issuer
-    return chain
+            with urllib.request.urlopen(urls[0], timeout=30) as resp:
+                certs = load_certs(resp.read())
+        except Exception as e:
+            print(f"  could not use {urls[0]}: {e}")
+            return
+        for c in certs:
+            print(f"  downloaded intermediate: {c.subject.rfc4514_string()}  (from {urls[0]})")
+        yield "".join(c.public_bytes(Encoding.PEM).decode() for c in certs)
+        cert = certs[0]
 
 
 def main(argv: list[str]) -> int:
@@ -77,10 +91,14 @@ def main(argv: list[str]) -> int:
             print(f"{host}: certificate chain is complete, standard roots are enough.")
             return 0
         print(f"{host}: incomplete certificate chain, fetching intermediates…")
-        chain = chase_intermediates(host, port)
-        out.write_text(roots.rstrip("\n") + "\n" + "".join(chain), encoding="utf-8")
-        ok = verifies(host, port, str(out))
-        print(f"{host}: verification with intermediates {'OK' if ok else 'STILL FAILING'}")
+        bundle = roots.rstrip("\n") + "\n"
+        for block in chase_intermediates(host, port):
+            bundle += block
+            out.write_text(bundle, encoding="utf-8")
+            if verifies(host, port, str(out)):
+                print(f"{host}: verification with intermediates OK")
+                return 0
+        print(f"{host}: verification still failing after adding intermediates")
     except Exception as e:  # never block the scraper here; it will report its own error
         print(f"warning: could not prepare CA bundle for {host}: {e}")
     return 0
