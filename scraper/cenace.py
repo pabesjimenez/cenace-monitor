@@ -20,6 +20,8 @@ Files written (all UTF-8 CSV, local time = America/Guayaquil):
   data/plants_daily_wide.csv   same, one column per plant (for Excel)                rebuilt
   data/plants_period.csv       month-to-date (MWh) / year-to-date (GWh) per plant    upsert (period_type, period, plant)
   data/daily_summary.csv       validated daily production KPIs                       upsert (date)
+  data/daily_best.csv          daily production by source, no gaps: validated, else end-of-day real-time  rebuilt
+  data/daily_compare.csv       end-of-day real-time vs validated, for days that have both           rebuilt
   data/period_summary.csv      month-to-date and year-to-date KPIs                   upsert (period_type, period)
   data/latest.json             everything parsed in the latest run (used by the dashboard)
 """
@@ -407,6 +409,7 @@ def save(tabs: dict, scraped_utc: datetime, last_modified: str | None) -> dict:
     # Daily production per plant, one clean series: CENACE's validated value when published
     # (daily tab, ~2 days later), otherwise the end-of-day real-time value (last capture of that day)
     build_plants_daily_best()
+    build_daily_best()
 
     # 7. Full capture history (every value CENACE showed, kept forever)
     if not same_page:
@@ -442,6 +445,60 @@ def build_plants_daily_best() -> None:
         d[r["plant"]] = r["mwh"]
     write_csv(DATA / "plants_daily_wide.csv", ["date"] + plants + ["source"],
               [by_date[d] for d in sorted(by_date)])
+
+
+def build_daily_best() -> None:
+    """Daily production by source with no gaps.
+
+    CENACE's "Información operativa diaria" tab lags and does not appear every day, so:
+      source = validado            -> the day as published in the daily tab
+      source = tiempo_real         -> the bot's last real-time capture of that day (reached the 23:30 block)
+      source = tiempo_real_parcial -> last real-time capture did not reach 23:30 (e.g. today, still running)
+    daily_compare.csv lists, for days that have both, the end-of-day real-time value vs the validated one.
+    """
+    validated = {r["date"]: r for r in read_csv(DATA / "daily_summary.csv")}
+    close = {}  # last snapshot of each real-time date
+    for s in read_csv(DATA / "snapshots.csv"):
+        d = s.get("realtime_date")
+        if d and (d not in close or s["scraped_at_utc"] > close[d]["scraped_at_utc"]):
+            close[d] = s
+
+    def parts_sum(v):
+        vals = [to_number(v.get(k)) for k in ("hidraulica", "termica", "no_convencional", "importacion")]
+        return None if any(x is None for x in vals) else round(sum(vals), 3)
+
+    rows, compare = [], []
+    for d in sorted(set(validated) | set(close)):
+        rt = None
+        if d in close:
+            s = close[d]
+            rt = {k: s.get(f"{k}_mwh") for k in PROD_KPIS}
+            rt["sum_parts"] = parts_sum(rt)
+            rt["close_at"] = s["scraped_at_local"]
+            rt["last_block"] = s.get("curve_last_time")
+        if d in validated:
+            v = validated[d]
+            row = {"date": d, "source": "validado", **{k: v.get(k) for k in PROD_KPIS},
+                   "sum_parts": parts_sum(v), "realtime_close_at": rt["close_at"] if rt else None,
+                   "realtime_last_block": rt["last_block"] if rt else None}
+            if rt:
+                for k in PROD_KPIS:
+                    a, b = to_number(rt.get(k)), to_number(v.get(k))
+                    if a is not None and b is not None:
+                        compare.append({"date": d, "variable": k, "tiempo_real_mwh": a, "validado_mwh": b,
+                                        "diferencia_mwh": round(a - b, 3),
+                                        "diferencia_pct": round(100 * (a - b) / b, 3) if b else None,
+                                        "realtime_close_at": rt["close_at"], "realtime_last_block": rt["last_block"]})
+        else:
+            row = {"date": d, "source": "tiempo_real" if rt["last_block"] == "23:30" else "tiempo_real_parcial",
+                   **{k: rt.get(k) for k in PROD_KPIS}, "sum_parts": rt["sum_parts"],
+                   "realtime_close_at": rt["close_at"], "realtime_last_block": rt["last_block"]}
+        rows.append(row)
+    write_csv(DATA / "daily_best.csv",
+              ["date", "source"] + PROD_KPIS + ["sum_parts", "realtime_close_at", "realtime_last_block"], rows)
+    write_csv(DATA / "daily_compare.csv",
+              ["date", "variable", "tiempo_real_mwh", "validado_mwh", "diferencia_mwh", "diferencia_pct",
+               "realtime_close_at", "realtime_last_block"], compare)
 
 
 # --------------------------------------------------------------------------- capture history
