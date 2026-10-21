@@ -46,25 +46,26 @@ date,plant,group,mwh,source
 2026-10-19,Gas Natural,otra,3176.0,validado
 2026-10-19,Renovable,otra,606.0,validado
 2026-10-19,Térmica,otra,25584.0,validado
-2026-10-20,Agoyán,hidro,1858.0,tiempo_real
-2026-10-20,Coca Codo,hidro,16434.0,tiempo_real
-2026-10-20,Delsitanisagua,hidro,2727.0,tiempo_real
-2026-10-20,Mazar,hidro,1502.0,tiempo_real
-2026-10-20,Minas San Francisco,hidro,1345.0,tiempo_real
-2026-10-20,Paute,hidro,12348.0,tiempo_real
-2026-10-20,San Francisco,hidro,2669.0,tiempo_real
-2026-10-20,Sopladora,hidro,7296.0,tiempo_real
-2026-10-20,Gas Natural,otra,2846.0,tiempo_real
-2026-10-20,Renovable,otra,500.0,tiempo_real
-2026-10-20,Térmica,otra,26258.0,tiempo_real
-2026-10-21,Agoyán,hidro,998.0,tiempo_real
-2026-10-21,Coca Codo,hidro,8079.0,tiempo_real
-2026-10-21,Delsitanisagua,hidro,1382.0,tiempo_real
+2026-10-20,Agoyán,hidro,1821.0,validado
+2026-10-20,Coca Codo,hidro,16099.0,validado
+2026-10-20,Delsitanisagua,hidro,2667.0,validado
+2026-10-20,Mazar,hidro,1501.0,validado
+2026-10-20,Minas San Francisco,hidro,1324.0,validado
+2026-10-20,Otras Hidro,hidro,24524.0,validado
+2026-10-20,Paute,hidro,12134.0,validado
+2026-10-20,San Francisco,hidro,2615.0,validado
+2026-10-20,Sopladora,hidro,7144.0,validado
+2026-10-20,Gas Natural,otra,2864.0,validado
+2026-10-20,Renovable,otra,523.0,validado
+2026-10-20,Térmica,otra,25126.0,validado
+2026-10-21,Agoyán,hidro,1061.0,tiempo_real
+2026-10-21,Coca Codo,hidro,8641.0,tiempo_real
+2026-10-21,Delsitanisagua,hidro,1468.0,tiempo_real
 2026-10-21,Mazar,hidro,97.0,tiempo_real
-2026-10-21,Minas San Francisco,hidro,1144.0,tiempo_real
+2026-10-21,Minas San Francisco,hidro,1230.0,tiempo_real
 2026-10-21,Paute,hidro,528.0,tiempo_real
-2026-10-21,San Francisco,hidro,1372.0,tiempo_real
+2026-10-21,San Francisco,hidro,1437.0,tiempo_real
 2026-10-21,Sopladora,hidro,314.0,tiempo_real
-2026-10-21,Gas Natural,otra,1557.0,tiempo_real
-2026-10-21,Renovable,otra,192.0,tiempo_real
-2026-10-21,Térmica,otra,13215.0,tiempo_real
+2026-10-21,Gas Natural,otra,1593.0,tiempo_real
+2026-10-21,Renovable,otra,211.0,tiempo_real
+2026-10-21,Térmica,otra,13764.0,tiempo_real
