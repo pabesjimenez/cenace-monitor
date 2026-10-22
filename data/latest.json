@@ -1,7 +1,7 @@
 {
- "scraped_at_utc": "2026-10-22T05:35:22Z",
- "scraped_at_local": "2026-10-22 00:35",
- "page_last_modified": "Thu, 22 Oct 2026 05:31:31 GMT",
+ "scraped_at_utc": "2026-10-22T06:05:23Z",
+ "scraped_at_local": "2026-10-22 01:05",
+ "page_last_modified": "Thu, 22 Oct 2026 06:01:32 GMT",
  "source": "https://www.cenace.gob.ec/info-operativa/InformacionOperativa.htm",
  "tabs": {
   "realtime": {
@@ -9,25 +9,25 @@
    "date": "2026-10-22",
    "unit": "MWh",
    "kpis": {
-    "produccion_total": 3507.0,
-    "exportacion": 1.0,
+    "produccion_total": 5243.0,
+    "exportacion": 8.0,
     "importacion": 1.0,
-    "hidraulica": 2205.0,
-    "termica": 1280.0,
-    "no_convencional": 17.0
+    "hidraulica": 3294.0,
+    "termica": 1916.0,
+    "no_convencional": 27.0
    },
    "plants": {
-    "Coca Codo": 853.0,
-    "Delsitanisagua": 179.0,
-    "San Francisco": 117.0,
-    "Agoyán": 85.0,
-    "Minas San Francisco": 36.0,
+    "Coca Codo": 1303.0,
+    "Delsitanisagua": 269.0,
+    "San Francisco": 167.0,
+    "Agoyán": 119.0,
+    "Minas San Francisco": 51.0,
     "Paute": 0.0
    },
    "other_generation": {
-    "Térmica": 1146.0,
-    "Gas Natural": 135.0,
-    "Renovable": 17.0
+    "Térmica": 1714.0,
+    "Gas Natural": 202.0,
+    "Renovable": 27.0
    },
    "curve": {
     "times": [
@@ -84,7 +84,7 @@
      "hidraulica_mw": [
       2202.156,
       2204.528,
-      null,
+      2165.808,
       null,
       null,
       null,
@@ -134,7 +134,7 @@
      "renovable_mw": [
       16.378,
       18.584,
-      null,
+      19.643,
       null,
       null,
       null,
@@ -184,7 +184,7 @@
      "importacion_mw": [
       0.0,
       1.942,
-      null,
+      0.0,
       null,
       null,
       null,
@@ -234,7 +234,7 @@
      "termica_mw": [
       1293.355,
       1267.081,
-      null,
+      1272.094,
       null,
       null,
       null,
@@ -284,7 +284,7 @@
      "exportacion_mw": [
       2.507,
       0.0,
-      null,
+      12.981,
       null,
       null,
       null,
@@ -334,7 +334,7 @@
      "produccion_total_mw": [
       3514.396,
       3492.135,
-      null,
+      3470.526,
       null,
       null,
       null,
@@ -384,7 +384,7 @@
      "demanda_nacional_mw": [
       3511.889,
       3492.135,
-      null,
+      3457.545,
       null,
       null,
       null,
@@ -441,34 +441,34 @@
    "date": "2026-10-22",
    "unit": "MW",
    "kpis": {
-    "demanda_total": 3330.0,
-    "demanda_anterior": 3312.0,
-    "demanda_cnel": 2469.0,
-    "demanda_empresas": 861.0
+    "demanda_total": 3284.0,
+    "demanda_anterior": 3328.0,
+    "demanda_cnel": 2436.0,
+    "demanda_empresas": 848.0
    },
    "plants": {},
    "other_generation": {},
    "curve": null,
    "companies": {
-    "CNEL BOLÍVAR": 13.498,
-    "E.E. AZOGUES": 17.64,
-    "E.E. REGIONAL SUR": 51.349,
-    "E.E. RIOBAMBA": 51.774,
-    "ELEPCO": 58.781,
-    "CNEL LOS RÍOS": 69.861,
-    "CNEL SUCUMBÍOS": 74.065,
-    "EMELNORTE": 77.593,
-    "E.E. AMBATO": 79.928,
-    "CNEL ESMERALDAS": 88.762,
-    "CNEL SANTA ELENA": 92.543,
-    "CNEL SANTO DOMINGO": 94.253,
-    "E.E. CENTRO SUR": 147.692,
-    "CNEL MILAGRO": 156.34,
-    "CNEL EL ORO": 191.842,
-    "CNEL MANABÍ": 331.046,
-    "E.E. QUITO": 376.415,
-    "CNEL GUAYAS LOS RÍOS": 416.752,
-    "CNEL GUAYAQUIL": 939.683
+    "CNEL BOLÍVAR": 13.251,
+    "E.E. AZOGUES": 17.547,
+    "E.E. REGIONAL SUR": 50.553,
+    "E.E. RIOBAMBA": 50.696,
+    "ELEPCO": 61.661,
+    "CNEL LOS RÍOS": 67.595,
+    "CNEL SUCUMBÍOS": 70.211,
+    "EMELNORTE": 75.828,
+    "E.E. AMBATO": 76.989,
+    "CNEL ESMERALDAS": 87.523,
+    "CNEL SANTA ELENA": 90.606,
+    "CNEL SANTO DOMINGO": 92.568,
+    "E.E. CENTRO SUR": 144.726,
+    "CNEL MILAGRO": 156.702,
+    "CNEL EL ORO": 185.808,
+    "CNEL MANABÍ": 321.488,
+    "E.E. QUITO": 369.542,
+    "CNEL GUAYAS LOS RÍOS": 431.111,
+    "CNEL GUAYAQUIL": 919.544
    },
    "note": null
   },
