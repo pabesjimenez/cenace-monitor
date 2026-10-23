@@ -70,23 +70,24 @@ date,plant,group,mwh,source
 2026-10-21,Gas Natural,otra,3135.0,validado
 2026-10-21,Renovable,otra,390.0,validado
 2026-10-21,Térmica,otra,25908.0,validado
-2026-10-22,Agoyán,hidro,2025.0,tiempo_real
-2026-10-22,Coca Codo,hidro,22117.0,tiempo_real
-2026-10-22,Delsitanisagua,hidro,3459.0,tiempo_real
-2026-10-22,Minas San Francisco,hidro,4491.0,tiempo_real
-2026-10-22,Paute,hidro,3912.0,tiempo_real
-2026-10-22,San Francisco,hidro,2836.0,tiempo_real
-2026-10-22,Sopladora,hidro,2314.0,tiempo_real
-2026-10-22,Gas Natural,otra,2858.0,tiempo_real
-2026-10-22,Renovable,otra,782.0,tiempo_real
-2026-10-22,Térmica,otra,25808.0,tiempo_real
-2026-10-23,Agoyán,hidro,1192.0,tiempo_real
-2026-10-23,Coca Codo,hidro,12946.0,tiempo_real
-2026-10-23,Delsitanisagua,hidro,2214.0,tiempo_real
-2026-10-23,Minas San Francisco,hidro,1034.0,tiempo_real
-2026-10-23,Paute,hidro,662.0,tiempo_real
-2026-10-23,San Francisco,hidro,1638.0,tiempo_real
-2026-10-23,Sopladora,hidro,390.0,tiempo_real
-2026-10-23,Gas Natural,otra,1746.0,tiempo_real
-2026-10-23,Renovable,otra,354.0,tiempo_real
-2026-10-23,Térmica,otra,14444.0,tiempo_real
+2026-10-22,Agoyán,hidro,1979.0,validado
+2026-10-22,Coca Codo,hidro,21666.0,validado
+2026-10-22,Delsitanisagua,hidro,3387.0,validado
+2026-10-22,Minas San Francisco,hidro,4418.0,validado
+2026-10-22,Otras Hidro,hidro,25244.0,validado
+2026-10-22,Paute,hidro,3862.0,validado
+2026-10-22,San Francisco,hidro,2772.0,validado
+2026-10-22,Sopladora,hidro,2287.0,validado
+2026-10-22,Gas Natural,otra,2872.0,validado
+2026-10-22,Renovable,otra,772.0,validado
+2026-10-22,Térmica,otra,24552.0,validado
+2026-10-23,Agoyán,hidro,1237.0,tiempo_real
+2026-10-23,Coca Codo,hidro,13440.0,tiempo_real
+2026-10-23,Delsitanisagua,hidro,2289.0,tiempo_real
+2026-10-23,Minas San Francisco,hidro,1093.0,tiempo_real
+2026-10-23,Paute,hidro,906.0,tiempo_real
+2026-10-23,San Francisco,hidro,1705.0,tiempo_real
+2026-10-23,Sopladora,hidro,534.0,tiempo_real
+2026-10-23,Gas Natural,otra,1814.0,tiempo_real
+2026-10-23,Renovable,otra,386.0,tiempo_real
+2026-10-23,Térmica,otra,14979.0,tiempo_real
