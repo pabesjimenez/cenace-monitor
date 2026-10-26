@@ -93,17 +93,18 @@ date,plant,group,mwh,source
 2026-10-23,Gas Natural,otra,3153.0,validado
 2026-10-23,Renovable,otra,822.0,validado
 2026-10-23,Térmica,otra,25186.0,validado
-2026-10-24,Agoyán,hidro,1905.0,tiempo_real
-2026-10-24,Coca Codo,hidro,24384.0,tiempo_real
-2026-10-24,Delsitanisagua,hidro,3521.0,tiempo_real
-2026-10-24,Mazar,hidro,461.0,tiempo_real
-2026-10-24,Minas San Francisco,hidro,1753.0,tiempo_real
-2026-10-24,Paute,hidro,5671.0,tiempo_real
-2026-10-24,San Francisco,hidro,2658.0,tiempo_real
-2026-10-24,Sopladora,hidro,3367.0,tiempo_real
-2026-10-24,Gas Natural,otra,3195.0,tiempo_real
-2026-10-24,Renovable,otra,761.0,tiempo_real
-2026-10-24,Térmica,otra,26397.0,tiempo_real
+2026-10-24,Agoyán,hidro,1864.0,validado
+2026-10-24,Coca Codo,hidro,23851.0,validado
+2026-10-24,Delsitanisagua,hidro,3444.0,validado
+2026-10-24,Mazar,hidro,460.0,validado
+2026-10-24,Minas San Francisco,hidro,1736.0,validado
+2026-10-24,Otras Hidro,hidro,23896.0,validado
+2026-10-24,Paute,hidro,5621.0,validado
+2026-10-24,San Francisco,hidro,2603.0,validado
+2026-10-24,Sopladora,hidro,3300.0,validado
+2026-10-24,Gas Natural,otra,3171.0,validado
+2026-10-24,Renovable,otra,761.0,validado
+2026-10-24,Térmica,otra,25288.0,validado
 2026-10-25,Agoyán,hidro,1949.0,tiempo_real
 2026-10-25,Coca Codo,hidro,24931.0,tiempo_real
 2026-10-25,Delsitanisagua,hidro,2514.0,tiempo_real
@@ -115,13 +116,13 @@ date,plant,group,mwh,source
 2026-10-25,Gas Natural,otra,2710.0,tiempo_real
 2026-10-25,Renovable,otra,739.0,tiempo_real
 2026-10-25,Térmica,otra,25799.0,tiempo_real
-2026-10-26,Agoyán,hidro,899.0,tiempo_real
-2026-10-26,Coca Codo,hidro,9553.0,tiempo_real
-2026-10-26,Delsitanisagua,hidro,1058.0,tiempo_real
-2026-10-26,Minas San Francisco,hidro,388.0,tiempo_real
-2026-10-26,Paute,hidro,168.0,tiempo_real
-2026-10-26,San Francisco,hidro,1238.0,tiempo_real
-2026-10-26,Sopladora,hidro,53.0,tiempo_real
-2026-10-26,Gas Natural,otra,868.0,tiempo_real
-2026-10-26,Renovable,otra,83.0,tiempo_real
-2026-10-26,Térmica,otra,11657.0,tiempo_real
+2026-10-26,Agoyán,hidro,973.0,tiempo_real
+2026-10-26,Coca Codo,hidro,10198.0,tiempo_real
+2026-10-26,Delsitanisagua,hidro,1123.0,tiempo_real
+2026-10-26,Minas San Francisco,hidro,413.0,tiempo_real
+2026-10-26,Paute,hidro,271.0,tiempo_real
+2026-10-26,San Francisco,hidro,1344.0,tiempo_real
+2026-10-26,Sopladora,hidro,116.0,tiempo_real
+2026-10-26,Gas Natural,otra,896.0,tiempo_real
+2026-10-26,Renovable,otra,89.0,tiempo_real
+2026-10-26,Térmica,otra,12211.0,tiempo_real
