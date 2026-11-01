@@ -186,12 +186,12 @@ date,plant,group,mwh,source
 2026-10-31,Gas Natural,otra,1531.0,tiempo_real
 2026-10-31,Renovable,otra,511.0,tiempo_real
 2026-10-31,Térmica,otra,24404.0,tiempo_real
-2026-11-01,Agoyán,hidro,1057.0,tiempo_real
-2026-11-01,Coca Codo,hidro,10787.0,tiempo_real
-2026-11-01,Delsitanisagua,hidro,1081.0,tiempo_real
-2026-11-01,Minas San Francisco,hidro,1553.0,tiempo_real
+2026-11-01,Agoyán,hidro,1114.0,tiempo_real
+2026-11-01,Coca Codo,hidro,11327.0,tiempo_real
+2026-11-01,Delsitanisagua,hidro,1125.0,tiempo_real
+2026-11-01,Minas San Francisco,hidro,1644.0,tiempo_real
 2026-11-01,Paute,hidro,3.0,tiempo_real
-2026-11-01,San Francisco,hidro,1445.0,tiempo_real
-2026-11-01,Gas Natural,otra,854.0,tiempo_real
-2026-11-01,Renovable,otra,170.0,tiempo_real
-2026-11-01,Térmica,otra,12546.0,tiempo_real
+2026-11-01,San Francisco,hidro,1525.0,tiempo_real
+2026-11-01,Gas Natural,otra,888.0,tiempo_real
+2026-11-01,Renovable,otra,190.0,tiempo_real
+2026-11-01,Térmica,otra,13070.0,tiempo_real
