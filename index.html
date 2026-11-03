@@ -251,7 +251,7 @@ function renderKPIs(){
     {label:"Demanda nacional", value:dem!=null?nf0.format(dem):"—", unit:"MW", note: s.curve_last_time ? `Bloque ${s.curve_last_time}${delta!=null?` · ${delta>=0?"▲":"▼"} ${nf0.format(Math.abs(delta))} MW vs. bloque anterior`:""}` : ""},
     {label:"Demanda distribuidoras", value:num(s.demanda_total_mw)!=null?nf0.format(num(s.demanda_total_mw)):"—", unit:"MW", note: num(s.demanda_cnel_mw)!=null?`CNEL ${nf0.format(num(s.demanda_cnel_mw))} · Empresas ${nf0.format(num(s.demanda_empresas_mw))}`:""},
     {label:"Producción del día", value:prod!=null?nf0.format(prod):"—", unit:"MWh", note:s.realtime_date?`Acumulado ${fmtDate(s.realtime_date)}`:""},
-    {label:"Participación hidráulica", value:(prod&&hid!=null)?nf1.format(hid/prod*100):"—", unit:"%", note:hid!=null?`${nf0.format(hid)} MWh`:""},
+    {label:"Hidráulica", value:hid!=null?nf0.format(hid):"—", unit:"MWh", note:(prod&&hid!=null)?`${nf1.format(hid/prod*100)} % del día`:""},
     {label:"Térmica", value:ter!=null?nf0.format(ter):"—", unit:"MWh", note:(prod&&ter!=null)?`${nf1.format(ter/prod*100)} % del día`:""},
     {label:"Importación / Exportación", value: s.importacion_mwh!==undefined ? `${nf0.format(num(s.importacion_mwh)||0)} / ${nf0.format(num(s.exportacion_mwh)||0)}` : "—", unit:"MWh", note:"Acumulado del día"},
   ];
