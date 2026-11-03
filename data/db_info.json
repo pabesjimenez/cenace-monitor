@@ -1,6 +1,6 @@
 {
- "built_at_utc": "2026-11-03T05:35:19Z",
- "size_bytes": 9908224,
+ "built_at_utc": "2026-11-03T05:35:51Z",
+ "size_bytes": 9965568,
  "first_capture_local": "2026-10-18 22:35",
  "last_capture_local": "2026-11-03 00:34",
  "tables": {
@@ -10,13 +10,15 @@
   "demand_by_company": 12863,
   "plants_realtime": 181,
   "plants_daily": 155,
-  "plants_daily_best": 216,
+  "plants_daily_best": 218,
   "plants_daily_wide": 19,
   "plants_period": 24,
   "daily_summary": 13,
   "daily_best": 19,
-  "daily_compare": 66,
+  "daily_compare": 72,
   "period_summary": 2,
+  "monthly_asof": 234,
+  "daily_inferred": 216,
   "observations": 36675,
   "captures": 677
  },
