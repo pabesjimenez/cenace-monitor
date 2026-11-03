@@ -165,7 +165,7 @@ footer{color:var(--text-muted);font-size:12px;margin-top:24px}
 </div>
 
 <script>
-const FILES = ["curve_realtime","curve_daily","snapshots","demand_by_company","plants_daily_best","plants_daily_wide","plants_realtime","plants_daily","plants_period","daily_best","daily_compare","daily_summary","period_summary"];
+const FILES = ["curve_realtime","curve_daily","snapshots","demand_by_company","plants_daily_best","plants_daily_wide","plants_realtime","plants_daily","plants_period","daily_best","daily_compare","daily_summary","period_summary","daily_inferred","monthly_asof"];
 const SOURCES = [ // fixed order = fixed color slots
   {key:"hidraulica", label:"Hidráulica",  color:"--series-1"},
   {key:"termica",    label:"Térmica",     color:"--series-2"},
@@ -320,21 +320,24 @@ function renderPlants(){
   document.getElementById("plants-sub").textContent=`Acumulado del ${fmtDate(last)}`;
   hbar("c-plants", items, "MWh", "--series-1");
 }
+const SRC_LABEL={validado:"validado por CENACE", validado_mensual:"validado (derivado del acumulado mensual)", tiempo_real:"cierre del día en tiempo real", tiempo_real_parcial:"tiempo real, día incompleto"};
+const isVal=r=>r.source==="validado"||r.source==="validado_mensual";
+const pl=(n,one,many)=>`${nf0.format(n)} ${n===1?one:many}`;
 function renderDaily(){
   const src=(D.daily_best&&D.daily_best.length)? D.daily_best : D.daily_summary.map(r=>({...r, source:"validado"}));
   const rows=[...src].sort((a,b)=>a.date.localeCompare(b.date)); if(!rows.length) return empty("c-daily");
-  const alpha=r=>r.source==="validado"?"":(r.source==="tiempo_real"?"80":"40");
-  const srcLabel=r=>r.source==="validado"?"validado por CENACE":(r.source==="tiempo_real"?"cierre del día en tiempo real":"tiempo real, día incompleto");
+  const alpha=r=>isVal(r)?"":(r.source==="tiempo_real"?"80":"40");
+  const srcLabel=r=>SRC_LABEL[r.source]||r.source;
   const keys=[["hidraulica","Hidráulica","--series-1"],["termica","Térmica","--series-2"],["no_convencional","Renovable no conv.","--series-3"],["importacion","Importación","--series-4"]];
   const o=baseOpts(); o.scales.x.stacked=true; o.scales.y.stacked=true;
   o.scales.y.ticks.callback=v=>nf0.format(v);
   o.plugins.tooltip.callbacks={title:it=>fmtDate(rows[it[0].dataIndex].date), label:c=>` ${c.dataset.label}: ${nf1.format(c.parsed.y)} GWh`, footer:items=>`Total: ${nf1.format(items.reduce((s,i)=>s+i.parsed.y,0))} GWh · ${srcLabel(rows[items[0].dataIndex])}`};
   const toGWh=(r,k)=>{const v=num(r[k]); return v==null?null:(r.unit==="GWh"? v : v/1000);};
   draw("c-daily",{type:"bar", data:{labels:rows.map(r=>rows.length>10? r.date.slice(8,10)+"/"+r.date.slice(5,7) : fmtDate(r.date)), datasets:keys.map(([k,l,c])=>({label:l, data:rows.map(r=>toGWh(r,k)), backgroundColor:rows.map(r=>css(c)+alpha(r)), borderColor:css("--surface-1"), borderWidth:{top:2}, borderSkipped:false, maxBarThickness:48}))}, options:o});
-  const nV=rows.filter(r=>r.source==="validado").length, nR=rows.filter(r=>r.source==="tiempo_real").length, nP=rows.length-nV-nR;
+  const nV=rows.filter(isVal).length, nM=rows.filter(r=>r.source==="validado_mensual").length, nR=rows.filter(r=>r.source==="tiempo_real").length, nP=rows.length-nV-nR;
   const cmp=(D.daily_compare||[]).filter(r=>r.variable==="produccion_total" && r.realtime_last_block==="23:30" && num(r.diferencia_pct)!=null);
-  const gap=cmp.length? ` · Cierre en tiempo real vs validado: diferencia media ${nf1.format(cmp.reduce((s,r)=>s+Math.abs(num(r.diferencia_pct)),0)/cmp.length)} % (${cmp.length} ${cmp.length===1?"día":"días"})` : "";
-  document.getElementById("daily-sub").textContent=`${nV} días validados por CENACE, ${nR} con cierre del día en tiempo real (barras claras)${nP?`, ${nP} incompleto`:""}${gap}`;
+  const gap=cmp.length? ` · Cierre en tiempo real vs validado: diferencia media ${nf1.format(cmp.reduce((s,r)=>s+Math.abs(num(r.diferencia_pct)),0)/cmp.length)} % (${pl(cmp.length,"día","días")})` : "";
+  document.getElementById("daily-sub").textContent=`${pl(nV,"día validado","días validados")} por CENACE${nM?` (${nM} ${nM===1?"derivado":"derivados"} del acumulado mensual)`:""}, ${nR} con cierre del día en tiempo real (barras claras)${nP?`, ${nP} ${nP===1?"incompleto":"incompletos"}`:""}${gap}`;
 }
 
 function renderPlantDaily(){
@@ -350,13 +353,13 @@ function renderPlantDaily(){
   if(state.pdRange>0 && pr.length){ const last=new Date(pr.at(-1).date); pr=pr.filter(r=>(last-new Date(r.date))/86400000 < state.pdRange); }
   const solid=css("--series-1");
   const o=baseOpts(); o.plugins.legend.display=false;
-  o.plugins.tooltip.callbacks={title:it=>fmtDate(pr[it[0].dataIndex].date), label:c=>` ${nf0.format(c.parsed.y)} MWh · ${pr[c.dataIndex].source==="validado"?"validado":"tiempo real (cierre del día)"}`};
+  o.plugins.tooltip.callbacks={title:it=>fmtDate(pr[it[0].dataIndex].date), label:c=>` ${nf0.format(c.parsed.y)} MWh · ${SRC_LABEL[pr[c.dataIndex].source]||pr[c.dataIndex].source}`};
   o.scales.x.ticks.callback=function(v){ const d=pr[v]?.date; return d? d.slice(8,10)+"/"+d.slice(5,7) : ""; };
   draw("c-pd",{type:"bar", data:{labels:pr.map(r=>r.date), datasets:[{label:state.pdPlant, data:pr.map(r=>num(r.mwh)),
-    backgroundColor:pr.map(r=>r.source==="validado"? solid : solid+"66"), borderColor:solid, borderWidth:pr.map(r=>r.source==="validado"?0:1),
+    backgroundColor:pr.map(r=>isVal(r)? solid : solid+"66"), borderColor:solid, borderWidth:pr.map(r=>isVal(r)?0:1),
     borderRadius:4, borderSkipped:"start", maxBarThickness:28}]}, options:o});
-  const nV=pr.filter(r=>r.source==="validado").length;
-  document.getElementById("pd-sub").textContent=`${state.pdPlant} · ${pr.length} días (${nV} validados, ${pr.length-nV} cierre en tiempo real — barras claras)`;
+  const nV=pr.filter(isVal).length, nM=pr.filter(r=>r.source==="validado_mensual").length;
+  document.getElementById("pd-sub").textContent=`${state.pdPlant} · ${pl(pr.length,"día","días")} (${nV} ${nV===1?"validado":"validados"}${nM?`, ${nM} del acumulado mensual`:""}; ${pr.length-nV} cierre en tiempo real — barras claras)`;
 }
 
 // ---------------------------------------------------------------- tables
@@ -386,6 +389,7 @@ function renderDB(){
       <div><b>${nf0.format(i.tables.observations||0)}</b><span>valores registrados</span></div>
       <div><b>${mb} MB</b><span>tamaño</span></div></div>
     ${i.revisions ? `<p style="margin:0 0 12px">Correcciones de CENACE detectadas: <b>${nf0.format(i.revisions.revised_values)}</b> de ${nf0.format(i.revisions.realtime_values)} valores semihorarios${i.revisions.revised_values?` (cambio máximo ${nf1.format(i.revisions.max_abs_change_mw)} MW)`:""}.</p>` : ""}
+    ${(()=>{const inf=(D.daily_inferred||[]); const days=new Set((D.daily_best||[]).filter(r=>r.source==="validado_mensual").map(r=>r.date)); const chk=inf.filter(r=>r.status==="comprobacion"), bad=chk.filter(r=>r.note!=="cuadra").length; return chk.length||days.size ? `<p style="margin:0 0 12px">Acumulado mensual: <b>${pl(days.size,"día recuperado","días recuperados")}</b> que la pestaña diaria no publicó${days.size?` (${[...days].sort().map(d=>d.slice(8,10)+"/"+d.slice(5,7)).join(", ")})`:""} · ${nf0.format(chk.length-bad)} de ${nf0.format(chk.length)} comprobaciones cuadran (tabla <code>daily_inferred</code>).</p>` : "";})()}
     <a class="btn" href="${link}">Descargar cenace.db</a>
     <p>Desde ${i.first_capture_local||"—"} hasta ${i.last_capture_local||"—"}. Tablas finales + <code>observations</code> (cada valor de cada captura) y vistas <code>v_day_close</code>, <code>v_curve_best</code>, <code>v_curve_revisions</code>, <code>v_company_demand</code>. Ábrala con DB Browser for SQLite, Python o Power BI.${r?` Páginas originales diarias: <a href="${r.url}/releases" style="color:inherit">Releases</a>.`:""}</p>`;
 }
