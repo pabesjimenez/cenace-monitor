@@ -28,11 +28,13 @@ OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "_work" / "cenace.db"
 
 FINAL_TABLES = ["curve_realtime", "curve_daily", "snapshots", "demand_by_company",
                 "plants_realtime", "plants_daily", "plants_daily_best", "plants_daily_wide",
-                "plants_period", "daily_summary", "daily_best", "daily_compare", "period_summary"]
+                "plants_period", "daily_summary", "daily_best", "daily_compare", "period_summary",
+                "monthly_asof", "daily_inferred"]
 TEXT_COLS = {"date", "time", "plant", "group", "company", "unit", "period", "period_type", "as_of_text",
              "scraped_at_utc", "scraped_at_local", "page_last_modified", "realtime_date", "demand_date",
              "curve_last_time", "updated_at_local", "source", "variable", "realtime_close_at",
-             "realtime_last_block"}
+             "realtime_last_block", "validated_source", "asof_date", "item", "asof_from", "asof_to",
+             "span_start", "span_end", "status", "note"}
 
 VIEWS = {
     # Clean half-hourly series: validated value when available, otherwise the last real-time value
@@ -80,10 +82,11 @@ VIEWS = {
         WHERE s.scraped_at_utc = (SELECT MAX(s2.scraped_at_utc) FROM snapshots s2
                                   WHERE s2.realtime_date = s.realtime_date)""",
 
-    # Monthly energy per plant from the daily series (complete months use validated data)
+    # Monthly energy per plant from the daily series (complete months use validated data;
+    # 'validado_mensual' = day the daily tab skipped, recovered from the month-to-date tab)
     "v_plant_monthly": """
         SELECT substr(date, 1, 7) AS month, plant, "group", SUM(mwh) AS mwh, COUNT(*) AS days,
-               SUM(source = 'validado') AS days_validated
+               SUM(source IN ('validado', 'validado_mensual')) AS days_validated
         FROM plants_daily_best GROUP BY 1, 2, 3""",
 }
 
