@@ -1,6 +1,6 @@
 {
- "built_at_utc": "2026-11-04T02:43:20Z",
- "size_bytes": 10489856,
+ "built_at_utc": "2026-11-04T02:44:56Z",
+ "size_bytes": 10498048,
  "first_capture_local": "2026-10-18 22:35",
  "last_capture_local": "2026-11-03 21:35",
  "tables": {
@@ -19,7 +19,7 @@
   "period_summary": 2,
   "monthly_asof": 234,
   "annual_asof": 50,
-  "daily_inferred": 216,
+  "daily_inferred": 261,
   "observations": 38509,
   "captures": 719
  },

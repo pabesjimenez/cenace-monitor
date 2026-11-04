@@ -1,6 +1,6 @@
 {
- "scraped_at_utc": "2026-11-04T02:43:20Z",
- "scraped_at_local": "2026-11-03 21:43",
+ "scraped_at_utc": "2026-11-04T02:44:56Z",
+ "scraped_at_local": "2026-11-03 21:44",
  "page_last_modified": "Wed, 04 Nov 2026 02:31:32 GMT",
  "source": "https://www.cenace.gob.ec/info-operativa/InformacionOperativa.htm",
  "tabs": {
@@ -435,6 +435,13 @@
     }
    },
    "companies": {},
+   "pie": {
+    "importacion": 1460.749905,
+    "hidraulica": 62592.108032,
+    "termica": 21410.634186,
+    "no_convencional": 531.746907,
+    "exportacion": 52.811496
+   },
    "note": null
   },
   "demand": {
@@ -470,6 +477,10 @@
     "CNEL GUAYAS LOS RÍOS": 496.138,
     "E.E. QUITO": 571.592,
     "CNEL GUAYAQUIL": 1099.979
+   },
+   "pie": {
+    "cnel": 3118.349817,
+    "electricas": 1262.267467
    },
    "note": null
   },
@@ -906,6 +917,13 @@
     }
    },
    "companies": {},
+   "pie": {
+    "importacion": 59.15,
+    "hidraulica": 69903.9,
+    "termica": 27466.4675,
+    "no_convencional": 451.3225,
+    "exportacion": 94.97
+   },
    "note": null
   },
   "monthly": {
@@ -1341,6 +1359,13 @@
     }
    },
    "companies": {},
+   "pie": {
+    "importacion": 3373.36,
+    "hidraulica": 2013902.4225,
+    "termica": 764868.2,
+    "no_convencional": 18005.3225,
+    "exportacion": 2450.87
+   },
    "note": "Demanda máxima mensual: Martes, 06 de octubre de 2026"
   },
   "annual": {
@@ -1776,6 +1801,13 @@
     }
    },
    "companies": {},
+   "pie": {
+    "importacion": 280.93687,
+    "hidraulica": 23728.392515,
+    "termica": 6525.921317,
+    "no_convencional": 340.00363,
+    "exportacion": 29.11461
+   },
    "note": "Demanda máxima histórica: Miércoles, 15 de julio de 2026"
   }
  }
