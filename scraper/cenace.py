@@ -24,7 +24,8 @@ Files written (all UTF-8 CSV, local time = America/Guayaquil):
   data/daily_compare.csv       end-of-day real-time vs validated, for days that have both           rebuilt
   data/period_summary.csv      month-to-date and year-to-date KPIs                   upsert (period_type, period)
   data/monthly_asof.csv        month-to-date MWh (totals + plants) for every "hasta el día N"  upsert (period, asof_date, item)
-  data/daily_inferred.csv      days recovered from the month-to-date tab + consistency checks  rebuilt
+  data/annual_asof.csv         exact year-to-date GWh by source (annual pie) for every "hasta el día N"  upsert
+  data/daily_inferred.csv      days recovered from the monthly/annual tabs + consistency checks  rebuilt
   data/latest.json             everything parsed in the latest run (used by the dashboard)
 """
 
@@ -206,6 +207,7 @@ def parse_tab(tab) -> dict:
     out["other_generation"] = {}
     out["curve"] = None
     out["companies"] = {}
+    out["pie"] = {}
     for traces in extract_figures(tab):
         names = [norm(t.get("name", "")) for t in traces]
         types = [t.get("type") for t in traces]
@@ -221,6 +223,12 @@ def parse_tab(tab) -> dict:
             target = "other_generation" if "gas natural" in names or "termica" in names else "plants"
             for t in traces:
                 out[target][(t.get("name") or "").strip()] = r1((t.get("y") or [None])[0])
+        elif types == ["pie"]:
+            # share-by-source pie: carries the exact values (the KPI boxes are rounded)
+            t = traces[0]
+            for name, val in zip(t.get("labels") or [], t.get("values") or []):
+                key = PIE_KEYS.get(norm(str(name)), norm(str(name)).replace(" ", "_"))
+                out["pie"][key] = None if val is None else round(float(val), 6)
         elif types == ["bar"] and traces[0].get("orientation") == "h":
             t = traces[0]
             for name, val in zip(t.get("y") or [], t.get("x") or []):
@@ -408,9 +416,10 @@ def save(tabs: dict, scraped_utc: datetime, last_modified: str | None) -> dict:
                ["period_type", "period", "as_of_text", "unit"] + PROD_KPIS + ["updated_at_local"],
                ["period_type", "period"], prow)
     update_monthly_asof(tabs.get("monthly"), stamp["scraped_at_local"])
+    update_annual_asof(tabs.get("annual"), stamp["scraped_at_local"])
 
     # Daily production, one clean series per source and per plant: CENACE's validated value when
-    # published (daily tab, ~2 days later); else the value recovered from the month-to-date tab;
+    # published (daily tab, ~2 days later); else the value recovered from the monthly/annual tabs;
     # else the end-of-day real-time value (last capture of that day)
     inferred = infer_from_monthly()
     build_plants_daily_best(inferred)
@@ -476,6 +485,7 @@ def build_daily_best(inferred: dict | None = None) -> None:
     CENACE's "Información operativa diaria" tab lags and does not appear every day, so:
       source = validado            -> the day as published in the daily tab
       source = validado_mensual    -> day the daily tab skipped, recovered from the month-to-date tab
+      source = validado_anual      -> same, from the year-to-date tab (by source only; bridges month ends)
                                       (difference between two "hasta el día N" totals; see infer_from_monthly)
       source = tiempo_real         -> the bot's last real-time capture of that day (reached the 23:30 block)
       source = tiempo_real_parcial -> last real-time capture did not reach 23:30 (e.g. today, still running)
@@ -485,7 +495,7 @@ def build_daily_best(inferred: dict | None = None) -> None:
     validated = {r["date"]: {**r, "_src": "validado"} for r in read_csv(DATA / "daily_summary.csv")}
     for d, v in inferred["totals"].items():
         if d not in validated:
-            validated[d] = {**v, "_src": "validado_mensual"}
+            validated[d] = dict(v)  # carries _src: validado_mensual / validado_anual
     close = day_close()
 
     def parts_sum(v):
@@ -527,31 +537,51 @@ def build_daily_best(inferred: dict | None = None) -> None:
                "realtime_close_at", "realtime_last_block", "validated_source"], compare)
 
 
-# --------------------------------------------------------------------------- days recovered from the monthly tab
+# --------------------------------------------------------------------------- days recovered from the cumulative tabs
 #
-# The "Acumulada mensual" tab shows month-to-date MWh "hasta el día N". It is validated data and,
-# when the daily tab skips a day, the monthly tab still includes it (e.g. it jumped from
-# "hasta el día 17" to "hasta el día 19"). So for two consecutive month-to-date figures A (day a)
-# and B (day b):   B - A = sum of the validated days a+1 .. b.
-# Subtracting the days that the daily tab did publish leaves:
+# The "Acumulada mensual" and "Acumulada anual" tabs show validated month-to-date / year-to-date
+# energy "hasta el día N". When the daily tab skips a day, those totals still include it
+# (e.g. the monthly tab jumped from "hasta el día 17" to "hasta el día 19"). So for two consecutive
+# cumulative figures A (day a) and B (day b):   B - A = sum of the validated days a+1 .. b.
+# Subtracting the days already known leaves:
 #   - nothing missing  -> a residual that must be ~0  (consistency check, "comprobacion")
-#   - one day missing  -> that day's validated value  ("validado_mensual", if it passes the checks)
+#   - one day missing  -> that day's validated value  ("validado_mensual" / "validado_anual")
 #   - 2+ days missing  -> only their combined total   ("varios_dias", not split, not used)
+#
+# Monthly tab: MWh, totals by source and per plant. It cannot bridge two months.
+# Annual tab: the summary boxes are rounded to whole GWh, but its pie chart carries the exact
+# values (GWh with 6 decimals), by source only. Being year-to-date it bridges the end of a month:
+# e.g. if the monthly tab goes from "octubre, hasta el día 30" straight to "noviembre, hasta el día 1",
+# annual(1 Nov) - annual(30 Oct) - 1 Nov (from the monthly tab) = 31 Oct.
+# Both are solved together, repeatedly, so a day recovered by one can unlock a day in the other.
 
 MONTHLY_ASOF = DATA / "monthly_asof.csv"
 MONTHLY_ASOF_HEADER = ["period", "asof_date", "item", "group", "mwh", "as_of_text", "updated_at_local"]
-INFERRED_HEADER = ["period", "asof_from", "asof_to", "span_start", "span_end", "n_days", "n_missing", "date",
-                   "item", "group", "monthly_diff_mwh", "validated_known_mwh", "result_mwh", "realtime_mwh",
+ANNUAL_ASOF = DATA / "annual_asof.csv"
+ANNUAL_ASOF_HEADER = ["period", "asof_date", "item", "gwh", "as_of_text", "updated_at_local"]
+INFERRED_HEADER = ["tab", "period", "asof_from", "asof_to", "span_start", "span_end", "n_days", "n_missing",
+                   "date", "item", "group", "cumulative_diff_mwh", "known_mwh", "result_mwh", "realtime_mwh",
                    "status", "note"]
-MAX_RT_GAP_PCT = 5.0  # a recovered day is rejected if its total differs more than this from real time
+MAX_RT_GAP_PCT = 5.0   # a recovered day is rejected if its total differs more than this from real time
+PARTS = ("hidraulica", "termica", "no_convencional", "importacion")  # produccion_total = sum of these
+PIE_KEYS = {"hidroelectrica": "hidraulica", "hidraulica": "hidraulica", "termica": "termica",
+            "renovable": "no_convencional", "no convencional": "no_convencional",
+            "r. no convencional": "no_convencional", "importacion": "importacion", "exportacion": "exportacion"}
+SOURCE_OF = {"mensual": "validado_mensual", "anual": "validado_anual"}
 
 
 def _asof_date(period: str, text: str) -> str | None:
-    """('2026-10', 'Octubre de 2026 (hasta el día 17)') -> '2026-10-17'"""
-    m = re.search(r"hasta el dia (\d{1,2})", norm(text))
-    if not m or not re.fullmatch(r"\d{4}-\d{2}", period or ""):
-        return None
-    return f"{period}-{int(m.group(1)):02d}"
+    """('2026-10', 'Octubre de 2026 (hasta el día 17)') -> '2026-10-17'
+       ('2026', '2026 (hasta el día 29 de octubre)')   -> '2026-10-29'"""
+    t = norm(text)
+    if re.fullmatch(r"\d{4}-\d{2}", period or ""):
+        m = re.search(r"hasta el dia (\d{1,2})", t)
+        return f"{period}-{int(m.group(1)):02d}" if m else None
+    if re.fullmatch(r"\d{4}", period or ""):
+        m = re.search(r"hasta el dia (\d{1,2}) de ([a-z]+)", t)
+        if m and m.group(2) in MONTHS:
+            return f"{period}-{MONTHS[m.group(2)]:02d}-{int(m.group(1)):02d}"
+    return None
 
 
 def _monthly_period(text: str) -> str | None:
@@ -581,6 +611,23 @@ def update_monthly_asof(t: dict | None, updated: str) -> None:
         values.update({(n, group): v for n, v in items.items() if v is not None})
     upsert(MONTHLY_ASOF, list(MONTHLY_ASOF_HEADER), ["period", "asof_date", "item"],
            _monthly_rows(period, asof, text, values, updated))
+
+
+def update_annual_asof(t: dict | None, updated: str) -> None:
+    """Keep the exact year-to-date GWh by source (from the annual pie chart) of every as-of day."""
+    if not t or (t.get("unit") or "").strip().lower() != "gwh":
+        return
+    pie = t.get("pie") or {}
+    if any(pie.get(k) is None for k in PARTS + ("exportacion",)):
+        return
+    text = t.get("date_text") or ""
+    year = re.search(r"(\d{4})", text)
+    asof = _asof_date(year.group(1), text) if year else None
+    if not asof:
+        return
+    upsert(ANNUAL_ASOF, list(ANNUAL_ASOF_HEADER), ["period", "asof_date", "item"],
+           [{"period": year.group(1), "asof_date": asof, "item": k, "gwh": pie[k], "as_of_text": text,
+             "updated_at_local": updated} for k in PARTS + ("exportacion",)])
 
 
 def backfill_monthly_asof() -> None:
@@ -619,15 +666,20 @@ def backfill_monthly_asof() -> None:
 
 
 def infer_from_monthly() -> dict:
-    """Recover validated days the daily tab skipped. Returns {"totals": {date: {kpi: v}},
-    "plants": {(date, plant): (group, v)}} for accepted days and writes data/daily_inferred.csv."""
+    """Recover validated days the daily tab skipped, from the monthly and annual tabs.
+    Returns {"totals": {date: {kpi: v, "_src": ...}}, "plants": {(date, plant): (group, v)}}
+    for accepted days and writes data/daily_inferred.csv (audit trail)."""
     from datetime import date as _date, timedelta
 
-    points: dict = {}  # period -> asof_date -> {(item, group): v}
+    cum: dict = {"mensual": {}, "anual": {}}  # tab -> period -> asof_date -> {(item, group): MWh}
     for r in read_csv(MONTHLY_ASOF):
         v = to_number(r["mwh"])
         if v is not None:
-            points.setdefault(r["period"], {}).setdefault(r["asof_date"], {})[(r["item"], r["group"])] = v
+            cum["mensual"].setdefault(r["period"], {}).setdefault(r["asof_date"], {})[(r["item"], r["group"])] = v
+    for r in read_csv(ANNUAL_ASOF):
+        v = to_number(r["gwh"])
+        if v is not None:
+            cum["anual"].setdefault(r["period"], {}).setdefault(r["asof_date"], {})[(r["item"], "total")] = v * 1000
     vtot = {r["date"]: r for r in read_csv(DATA / "daily_summary.csv")}
     vpl_rows = read_csv(DATA / "plants_daily.csv")
     vpl = {(r["date"], r["plant"]): to_number(r["mwh"]) for r in vpl_rows}
@@ -638,12 +690,16 @@ def infer_from_monthly() -> dict:
     close = day_close()
     rtpl = {(r["date"], r["plant"]): to_number(r["mwh"]) for r in read_csv(DATA / "plants_realtime.csv")}
     known_dates = set(vtot) | {d for d, _ in vpl} | set(close)
-    if not points or not known_dates:
+    if not (cum["mensual"] or cum["anual"]) or not known_dates:
         write_csv(DATA / "daily_inferred.csv", INFERRED_HEADER, [])
         return {"totals": {}, "plants": {}}
     first_day = min(known_dates)  # the bot cannot judge days before it existed
 
-    def validated(d, item, group):
+    accepted: dict = {}  # (date, item, group) -> (value, tab)
+
+    def known(d, item, group):
+        if (d, item, group) in accepted:
+            return accepted[(d, item, group)][0]
         if group == "total":
             return to_number(vtot[d].get(item)) if d in vtot else None
         return vpl.get((d, item))
@@ -653,59 +709,33 @@ def infer_from_monthly() -> dict:
             return to_number(close[d].get(f"{item}_mwh")) if d in close else None
         return rtpl.get((d, item))
 
-    audit, cand = [], {}   # cand: date -> {(item, group): (value, audit_row)}
-    for period, pts in sorted(points.items()):
-        y, m = map(int, period.split("-"))
-        start = _date(y, m, 1) - timedelta(days=1)
-        seq = [(start.isoformat(), None)] + sorted(pts.items())
-        for (a, A), (b, B) in zip(seq, seq[1:]):
-            span, d = [], _date.fromisoformat(a) + timedelta(days=1)
-            while d.isoformat() <= b:
-                span.append(d.isoformat())
-                d += timedelta(days=1)
-            if not span or span[0] < first_day:
-                continue
-            for (item, group), vb in sorted(B.items()):
-                if A is None:
-                    va = 0.0
-                elif (item, group) in A:
-                    va = A[(item, group)]
-                else:
-                    continue  # item not shown at the previous as-of day: cannot difference
-                diff = vb - va
-                vals = {s: validated(s, item, group) for s in span}
-                missing = [s for s, x in vals.items() if x is None]
-                known = sum(x for x in vals.values() if x is not None)
-                result = round(diff - known, 3)
-                row = {"period": period, "asof_from": a if A is not None else "", "asof_to": b,
-                       "span_start": span[0], "span_end": span[-1], "n_days": len(span),
-                       "n_missing": len(missing), "item": item, "group": group,
-                       "monthly_diff_mwh": round(diff, 3), "validated_known_mwh": round(known, 3),
-                       "result_mwh": result}
-                if not missing:
-                    tol = 2 + 0.5 * len(span)
-                    ok = abs(result) <= tol
-                    row.update(status="comprobacion", note="cuadra" if ok else f"no cuadra (tolerancia ±{tol:g} MWh)")
-                elif len(missing) == 1:
-                    row.update(date=missing[0], realtime_mwh=realtime(missing[0], item, group), status="pendiente")
-                    cand.setdefault(missing[0], {})[(item, group)] = (result, row)
-                else:
-                    row.update(date=f"{missing[0]}..{missing[-1]}", status="varios_dias",
-                               note=f"{len(missing)} días sin validar: solo se conoce su suma")
-                audit.append(row)
+    def intervals(tab):
+        for period, pts in sorted(cum[tab].items()):
+            y = int(period[:4])
+            start = (_date(y, int(period[5:7]), 1) if tab == "mensual" else _date(y, 1, 1)) - timedelta(days=1)
+            seq = [(start.isoformat(), None)] + sorted(pts.items())
+            for (a, A), (b, B) in zip(seq, seq[1:]):
+                span, d = [], _date.fromisoformat(a) + timedelta(days=1)
+                while d.isoformat() <= b:
+                    span.append(d.isoformat())
+                    d += timedelta(days=1)
+                if span and span[0] >= first_day:
+                    yield period, a, A, b, B, span
 
-    totals, plants = {}, {}
-    for d, items in sorted(cand.items()):
-        tot = {i: v for (i, g), (v, _) in items.items() if g == "total"}
-        hid = {i: v for (i, g), (v, _) in items.items() if g == "hidro"}
+    def check_day(d, tab, items):
+        """items: {(item, group): value}. Returns a list of problems (empty = accepted)."""
+        tot = {i: v for (i, g), v in items.items() if g == "total"}
+        hid = {i: v for (i, g), v in items.items() if g == "hidro"}
         problems = []
-        if any(v < -1 for v, _ in items.values()):
+        if any(v < -1 for v in items.values()):
             problems.append("valor negativo")
         if tot:
+            if tab == "anual" and all(k in tot for k in PARTS):
+                tot.setdefault("produccion_total", sum(tot[k] for k in PARTS))
             if any(k not in tot for k in PROD_KPIS):
                 problems.append("faltan totales")
             else:
-                parts = sum(tot[k] for k in ("hidraulica", "termica", "no_convencional", "importacion"))
+                parts = sum(tot[k] for k in PARTS)
                 if abs(parts - tot["produccion_total"]) > 3:
                     problems.append(f"las partes no suman el total ({parts - tot['produccion_total']:+.0f} MWh)")
                 rt = realtime(d, "produccion_total", "total")
@@ -713,25 +743,80 @@ def infer_from_monthly() -> dict:
                     gap = 100 * (tot["produccion_total"] - rt) / rt
                     if abs(gap) > MAX_RT_GAP_PCT:
                         problems.append(f"difiere {gap:+.1f} % del tiempo real")
-        hid_ref = tot.get("hidraulica", validated(d, "hidraulica", "total"))
+        hid_ref = tot.get("hidraulica", known(d, "hidraulica", "total"))
         hid_sum = sum(hid.values()) + vhid.get(d, 0)
         if hid and hid_ref is not None and abs(hid_sum - hid_ref) > 2 + 0.5 * len(hid):
             problems.append(f"centrales hidro no suman Hidráulica ({hid_sum - hid_ref:+.0f} MWh)")
-        for (item, group), (v, row) in items.items():
-            row["status"] = "rechazado" if problems else "validado_mensual"
-            row["note"] = "; ".join(problems) if problems else "derivado del acumulado mensual"
-        if problems:
-            continue
-        if tot:
-            totals[d] = {k: round(v, 3) for k, v in tot.items()}
-        for (item, group), (v, _) in items.items():
-            if group != "total":
-                plants[(d, item)] = (group, round(v, 3))
+        return problems, tot
 
-    audit.sort(key=lambda r: (r["span_start"], r["group"] != "total", r["group"], r["item"]))
-    write_csv(DATA / "daily_inferred.csv", INFERRED_HEADER, audit)
+    solved_rows: list = []   # audit rows of accepted derivations
+    used: set = set()        # intervals used to derive a day (their residual is 0 by construction)
+    totals: dict = {}
+    plants: dict = {}
+    for _ in range(10):      # repeat until no new day is recovered
+        audit, cand = [], {}
+        for tab in ("mensual", "anual"):
+            for period, a, A, b, B, span in intervals(tab):
+                for (item, group), vb in sorted(B.items()):
+                    if A is None:
+                        va = 0.0
+                    elif (item, group) in A:
+                        va = A[(item, group)]
+                    else:
+                        continue  # item not shown at the previous as-of day: cannot difference
+                    diff = vb - va
+                    vals = {s: known(s, item, group) for s in span}
+                    missing = [s for s, x in vals.items() if x is None]
+                    kn = sum(x for x in vals.values() if x is not None)
+                    result = round(diff - kn, 1)
+                    key = (tab, period, a, b, item, group)
+                    row = {"tab": tab, "period": period, "asof_from": a if A is not None else "", "asof_to": b,
+                           "span_start": span[0], "span_end": span[-1], "n_days": len(span),
+                           "n_missing": len(missing), "item": item, "group": group,
+                           "cumulative_diff_mwh": round(diff, 1), "known_mwh": round(kn, 1), "result_mwh": result}
+                    if not missing:
+                        if key in used:
+                            continue
+                        tol = 2 + 0.5 * len(span)
+                        row.update(status="comprobacion",
+                                   note="cuadra" if abs(result) <= tol else f"no cuadra (tolerancia ±{tol:g} MWh)")
+                    elif len(missing) == 1:
+                        row.update(date=missing[0], realtime_mwh=realtime(missing[0], item, group), status="pendiente")
+                        cand.setdefault((missing[0], tab), {})[(item, group)] = (result, row, key)
+                    else:
+                        row.update(date=f"{missing[0]}..{missing[-1]}", status="varios_dias",
+                                   note=f"{len(missing)} días sin validar: solo se conoce su suma")
+                    audit.append(row)
+        new = 0
+        # monthly first: it is in whole MWh and also gives the plants
+        for (d, tab), items in sorted(cand.items(), key=lambda kv: (kv[0][1] != "mensual", kv[0][0])):
+            items = {k: x for k, x in items.items() if (d, *k) not in accepted}
+            if not items:
+                continue  # already recovered by the other tab in this round
+            problems, tot = check_day(d, tab, {k: v for k, (v, _, _) in items.items()})
+            for (item, group), (v, row, key) in items.items():
+                row["status"] = "rechazado" if problems else SOURCE_OF[tab]
+                row["note"] = "; ".join(problems) if problems else f"derivado del acumulado {tab}"
+            if problems:
+                continue
+            new += 1
+            for (item, group), (v, row, key) in items.items():
+                accepted[(d, item, group)] = (v, tab)
+                used.add(key)
+                solved_rows.append(row)
+                if group != "total":
+                    plants[(d, item)] = (group, round(v, 1))
+            if tot:
+                totals[d] = {**{k: round(v, 1) for k, v in tot.items()}, "_src": SOURCE_OF[tab]}
+        if not new:
+            break
+
+    final = solved_rows + [r for r in audit if r["status"] not in ("pendiente",) and r not in solved_rows]
+    final.sort(key=lambda r: (r["span_start"], r["tab"], r["group"] != "total", r["group"], r["item"]))
+    write_csv(DATA / "daily_inferred.csv", INFERRED_HEADER, final)
     if totals or plants:
-        print(f"Recovered from the monthly tab: {sorted(totals) or sorted({d for d, _ in plants})}")
+        print(f"Recovered from the cumulative tabs: "
+              f"{ {d: v['_src'] for d, v in sorted(totals.items())} or sorted({d for d, _ in plants})}")
     return {"totals": totals, "plants": plants}
 
 
@@ -770,6 +855,8 @@ def flatten(tabs: dict) -> list[tuple]:
             out.append((f"plant_{kind}", date, name, "mwh_otra", v))
         for name, v in (t.get("companies") or {}).items():
             out.append(("company_demand", date, name, "mw", v))
+        for name, v in (t.get("pie") or {}).items():
+            out.append((f"pie_{kind}", date, "", name, v))
         c = t.get("curve")
         if c:
             ds = {"realtime": "curve_realtime", "daily": "curve_daily"}.get(kind, f"curve_{kind}_maxday")
