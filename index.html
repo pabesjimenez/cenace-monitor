@@ -140,6 +140,17 @@ footer{color:var(--text-muted);font-size:12px;margin-top:24px}
       <div class="chart"><canvas id="c-pd"></canvas></div>
     </div>
 
+    <div class="card span-12">
+      <div class="card-head">
+        <div><h2>Potencia media diaria por central (MW)</h2><p class="card-sub" id="pm-sub">Energía del día (MWh) ÷ 24 h</p></div>
+        <div class="controls">
+          <select id="pm-plant" aria-label="Central"></select>
+          <div class="seg" id="pm-range"><button data-v="30" class="on">30 días</button><button data-v="90">90 días</button><button data-v="0">Todo</button></div>
+        </div>
+      </div>
+      <div class="chart"><canvas id="c-pm"></canvas></div>
+    </div>
+
     <div class="card span-6">
       <div class="card-head"><div><h2>Acumulado mensual y anual</h2><p class="card-sub">Última versión publicada por CENACE</p></div></div>
       <div class="table-scroll"><table id="t-period"></table></div>
@@ -173,7 +184,7 @@ const SOURCES = [ // fixed order = fixed color slots
   {key:"importacion",label:"Importación", color:"--series-4"},
 ];
 const D = {}; const charts = {};
-const state = {curveSrc:"rt", curveDate:null, demRange:7, pdPlant:null, pdRange:30};
+const state = {curveSrc:"rt", curveDate:null, demRange:7, pdPlant:null, pdRange:30, pmPlant:null, pmRange:30};
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const nf0 = new Intl.NumberFormat("es-EC",{maximumFractionDigits:0});
 const nf1 = new Intl.NumberFormat("es-EC",{maximumFractionDigits:1});
@@ -341,26 +352,48 @@ function renderDaily(){
   document.getElementById("daily-sub").textContent=`${pl(nV,"día validado","días validados")} por CENACE${nM?` (${nM} ${nM===1?"derivado":"derivados"} de los acumulados mensual/anual)`:""}, ${nR} con cierre del día en tiempo real (barras claras)${nP?`, ${nP} ${nP===1?"incompleto":"incompletos"}`:""}${gap}`;
 }
 
-function renderPlantDaily(){
-  const rows=D.plants_daily_best||[]; if(!rows.length) return empty("c-pd");
-  const sel=document.getElementById("pd-plant");
+// Hours of the day covered by a row: 24 for validated / closed days; for an incomplete
+// real-time day, up to the end of the last 30-min block (e.g. last block 21:30 -> 22 h).
+function hoursCovered(r){
+  if(isVal(r)) return 24;
+  const b=(D.daily_best||[]).find(x=>x.date===r.date);
+  if(!b || b.source!=="tiempo_real_parcial" || !/^\d{1,2}:\d{2}$/.test(b.realtime_last_block||"")) return 24;
+  const [h,m]=b.realtime_last_block.split(":").map(Number);
+  return Math.min(24,(h*60+m+30)/60);
+}
+function renderPlantDaily(){ renderPlantSeries("pd"); renderPlantSeries("pm"); }
+function renderPlantSeries(k){
+  const avg = k==="pm";
+  const rows=D.plants_daily_best||[]; if(!rows.length) return empty("c-"+k);
+  const sel=document.getElementById(k+"-plant");
   const totals={}; rows.forEach(r=>totals[r.plant]=(totals[r.plant]||0)+(num(r.mwh)||0));
   const hidro=[...new Set(rows.filter(r=>r.group==="hidro").map(r=>r.plant))].sort((a,b)=>totals[b]-totals[a]);
   const otra=[...new Set(rows.filter(r=>r.group!=="hidro").map(r=>r.plant))].sort((a,b)=>totals[b]-totals[a]);
-  if(!state.pdPlant || !totals.hasOwnProperty(state.pdPlant)) state.pdPlant = hidro.find(p=>!/otras/i.test(p)) || hidro[0] || otra[0];
-  sel.innerHTML=`<optgroup label="Hidroeléctricas">${hidro.map(p=>`<option ${p===state.pdPlant?"selected":""}>${p}</option>`).join("")}</optgroup>`+
-                `<optgroup label="Otra generación">${otra.map(p=>`<option ${p===state.pdPlant?"selected":""}>${p}</option>`).join("")}</optgroup>`;
-  let pr=rows.filter(r=>r.plant===state.pdPlant).sort((a,b)=>a.date.localeCompare(b.date));
-  if(state.pdRange>0 && pr.length){ const last=new Date(pr.at(-1).date); pr=pr.filter(r=>(last-new Date(r.date))/86400000 < state.pdRange); }
+  const P=k+"Plant", R=k+"Range";
+  if(!state[P] || !totals.hasOwnProperty(state[P])) state[P] = hidro.find(p=>!/otras/i.test(p)) || hidro[0] || otra[0];
+  sel.innerHTML=`<optgroup label="Hidroeléctricas">${hidro.map(p=>`<option ${p===state[P]?"selected":""}>${p}</option>`).join("")}</optgroup>`+
+                `<optgroup label="Otra generación">${otra.map(p=>`<option ${p===state[P]?"selected":""}>${p}</option>`).join("")}</optgroup>`;
+  let pr=rows.filter(r=>r.plant===state[P]).sort((a,b)=>a.date.localeCompare(b.date));
+  if(state[R]>0 && pr.length){ const last=new Date(pr.at(-1).date); pr=pr.filter(r=>(last-new Date(r.date))/86400000 < state[R]); }
+  const hrs=pr.map(hoursCovered);
+  const val=pr.map((r,i)=>{ const v=num(r.mwh); return v==null? null : (avg? v/hrs[i] : v); });
   const solid=css("--series-1");
   const o=baseOpts(); o.plugins.legend.display=false;
-  o.plugins.tooltip.callbacks={title:it=>fmtDate(pr[it[0].dataIndex].date), label:c=>` ${nf0.format(c.parsed.y)} MWh · ${SRC_LABEL[pr[c.dataIndex].source]||pr[c.dataIndex].source}`};
+  const src=r=>SRC_LABEL[r.source]||r.source;
+  o.plugins.tooltip.callbacks = avg
+    ? {title:it=>fmtDate(pr[it[0].dataIndex].date),
+       label:c=>{ const i=c.dataIndex, h=hrs[i]; return [` ${nf1.format(c.parsed.y)} MW de potencia media`, ` ${nf0.format(num(pr[i].mwh))} MWh ÷ ${nf1.format(h)} h${h<24?" (día incompleto)":""}`, ` ${src(pr[i])}`]; }}
+    : {title:it=>fmtDate(pr[it[0].dataIndex].date), label:c=>` ${nf0.format(c.parsed.y)} MWh · ${src(pr[c.dataIndex])}`};
+  if(avg) o.scales.y.ticks.callback=v=>nf0.format(v);
   o.scales.x.ticks.callback=function(v){ const d=pr[v]?.date; return d? d.slice(8,10)+"/"+d.slice(5,7) : ""; };
-  draw("c-pd",{type:"bar", data:{labels:pr.map(r=>r.date), datasets:[{label:state.pdPlant, data:pr.map(r=>num(r.mwh)),
-    backgroundColor:pr.map(r=>isVal(r)? solid : solid+"66"), borderColor:solid, borderWidth:pr.map(r=>isVal(r)?0:1),
+  draw("c-"+k,{type:"bar", data:{labels:pr.map(r=>r.date), datasets:[{label:state[P], data:val,
+    backgroundColor:pr.map((r,i)=>isVal(r)? solid : solid+(hrs[i]<24?"33":"66")), borderColor:solid, borderWidth:pr.map(r=>isVal(r)?0:1),
     borderRadius:4, borderSkipped:"start", maxBarThickness:28}]}, options:o});
-  const nV=pr.filter(isVal).length, nM=pr.filter(isDer).length;
-  document.getElementById("pd-sub").textContent=`${state.pdPlant} · ${pl(pr.length,"día","días")} (${nV} ${nV===1?"validado":"validados"}${nM?`, ${nM} del acumulado mensual`:""}; ${pr.length-nV} cierre en tiempo real — barras claras)`;
+  const nV=pr.filter(isVal).length, nM=pr.filter(isDer).length, nI=hrs.filter(h=>h<24).length;
+  const counts=`${pl(pr.length,"día","días")} (${nV} ${nV===1?"validado":"validados"}${nM?`, ${nM} del acumulado mensual`:""}; ${pr.length-nV} cierre en tiempo real — barras claras)`;
+  if(!avg){ document.getElementById("pd-sub").textContent=`${state[P]} · ${counts}`; return; }
+  const ok=val.filter((v,i)=>v!=null && hrs[i]===24), mean=ok.length? ok.reduce((a,b)=>a+b,0)/ok.length : null;
+  document.getElementById("pm-sub").textContent=`${state[P]} · MWh del día ÷ 24 h${nI?" (hoy: ÷ horas transcurridas)":""}${mean!=null?` · promedio ${nf0.format(mean)} MW`:""} · barras claras: tiempo real`;
 }
 
 // ---------------------------------------------------------------- tables
@@ -399,8 +432,10 @@ function renderAll(){ renderStatus(); renderKPIs(); renderCurve(); renderDemand(
 document.getElementById("curve-src").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; state.curveSrc=b.dataset.v; state.curveDate=null; [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b)); renderCurve(); });
 document.getElementById("curve-date").addEventListener("change",e=>{ state.curveDate=e.target.value; renderCurve(); });
 document.getElementById("dem-range").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; state.demRange=+b.dataset.v; [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b)); renderDemand(); });
-document.getElementById("pd-plant").addEventListener("change",e=>{ state.pdPlant=e.target.value; renderPlantDaily(); });
-document.getElementById("pd-range").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; state.pdRange=+b.dataset.v; [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b)); renderPlantDaily(); });
+document.getElementById("pd-plant").addEventListener("change",e=>{ state.pdPlant=e.target.value; renderPlantSeries("pd"); });
+document.getElementById("pd-range").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; state.pdRange=+b.dataset.v; [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b)); renderPlantSeries("pd"); });
+document.getElementById("pm-plant").addEventListener("change",e=>{ state.pmPlant=e.target.value; renderPlantSeries("pm"); });
+document.getElementById("pm-range").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; state.pmRange=+b.dataset.v; [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b)); renderPlantSeries("pm"); });
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>renderAll());
 
 (async function init(){
