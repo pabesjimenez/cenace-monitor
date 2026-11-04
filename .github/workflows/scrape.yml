@@ -33,7 +33,12 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
+      # Always start from the latest main. A run that waited in the queue (two triggers close together,
+      # e.g. GitHub's schedule and the external timer) would otherwise check out an old commit, and its
+      # data commit would conflict with the previous run's.
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
