@@ -306,14 +306,14 @@ mensual,2026-11,2026-11-01,2026-11-02,2026-11-02,2026-11-02,1,0,,Renovable,otra,
 mensual,2026-11,2026-11-01,2026-11-02,2026-11-02,2026-11-02,1,0,,Térmica,otra,18949.0,18949.0,0.0,,comprobacion,cuadra
 anual,2026,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,exportacion,total,61.4,61.0,0.4,,comprobacion,cuadra
 anual,2026,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,hidraulica,total,66979.7,66980.0,-0.3,,comprobacion,cuadra
-anual,2026,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,importacion,total,0.0,0.0,0.0,,comprobacion,cuadra
+anual,2026,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,importacion,total,1631.7,1498.0,133.7,,comprobacion,no cuadra (tolerancia ±2.5 MWh)
 anual,2026,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,no_convencional,total,558.9,559.0,-0.1,,comprobacion,cuadra
 anual,2026,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,termica,total,22218.0,23372.0,-1154.0,,comprobacion,no cuadra (tolerancia ±2.5 MWh)
 mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,exportacion,total,62.0,61.0,1.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,hidraulica,total,66980.0,66980.0,0.0,,comprobacion,cuadra
-mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,importacion,total,0.0,0.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,importacion,total,1631.0,1498.0,133.0,,comprobacion,no cuadra (tolerancia ±2.5 MWh)
 mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,no_convencional,total,559.0,559.0,0.0,,comprobacion,cuadra
-mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,produccion_total,total,90911.0,90911.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,produccion_total,total,92542.0,92409.0,133.0,,comprobacion,no cuadra (tolerancia ±2.5 MWh)
 mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,termica,total,23372.0,23372.0,0.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,Agoyán,hidro,2264.0,2264.0,0.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-02,2026-11-03,2026-11-03,2026-11-03,1,0,,Coca Codo,hidro,22580.0,22580.0,0.0,,comprobacion,cuadra
