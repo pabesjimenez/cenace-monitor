@@ -233,20 +233,20 @@ period,asof_date,item,group,mwh,as_of_text,updated_at_local
 2026-10,2026-10-29,no_convencional,total,18005.0,Octubre de 2026 (hasta el día 29),2026-11-04 10:35
 2026-10,2026-10-29,produccion_total,total,2800149.0,Octubre de 2026 (hasta el día 29),2026-11-04 10:35
 2026-10,2026-10-29,termica,total,764868.0,Octubre de 2026 (hasta el día 29),2026-11-04 10:35
-2026-11,2026-11-01,Agoyán,hidro,2286.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,Coca Codo,hidro,23833.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,Delsitanisagua,hidro,2646.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,Gas Natural,otra,1955.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,Minas San Francisco,hidro,3622.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,Otras Hidro,hidro,24541.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,Paute,hidro,780.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,Renovable,otra,562.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,San Francisco,hidro,3192.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,Sopladora,hidro,364.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,Térmica,otra,23738.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,exportacion,total,94.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,hidraulica,total,61263.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,importacion,total,98.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,no_convencional,total,562.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,produccion_total,total,87615.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
-2026-11,2026-11-01,termica,total,25692.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:05
+2026-11,2026-11-01,Agoyán,hidro,2286.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,Coca Codo,hidro,23833.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,Delsitanisagua,hidro,2646.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,Gas Natural,otra,1955.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,Minas San Francisco,hidro,3622.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,Otras Hidro,hidro,24541.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,Paute,hidro,780.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,Renovable,otra,562.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,San Francisco,hidro,3192.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,Sopladora,hidro,364.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,Térmica,otra,23738.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,exportacion,total,94.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,hidraulica,total,61263.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,importacion,total,98.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,no_convencional,total,562.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,produccion_total,total,87615.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
+2026-11,2026-11-01,termica,total,25692.0,Noviembre de 2026 (hasta el día 01),2026-11-04 12:50
