@@ -221,24 +221,25 @@ date,plant,group,mwh,source
 2026-11-03,Gas Natural,otra,1940.0,validado
 2026-11-03,Renovable,otra,559.0,validado
 2026-11-03,Térmica,otra,21432.0,validado
-2026-11-04,Agoyán,hidro,2427.0,tiempo_real
-2026-11-04,Coca Codo,hidro,21833.0,tiempo_real
-2026-11-04,Delsitanisagua,hidro,2584.0,tiempo_real
-2026-11-04,Mazar,hidro,655.0,tiempo_real
-2026-11-04,Minas San Francisco,hidro,5067.0,tiempo_real
-2026-11-04,Paute,hidro,5670.0,tiempo_real
-2026-11-04,San Francisco,hidro,3367.0,tiempo_real
-2026-11-04,Sopladora,hidro,3331.0,tiempo_real
-2026-11-04,Gas Natural,otra,1873.0,tiempo_real
-2026-11-04,Renovable,otra,571.0,tiempo_real
-2026-11-04,Térmica,otra,26599.0,tiempo_real
-2026-11-05,Agoyán,hidro,1305.0,tiempo_real
-2026-11-05,Coca Codo,hidro,10378.0,tiempo_real
-2026-11-05,Delsitanisagua,hidro,1271.0,tiempo_real
-2026-11-05,Minas San Francisco,hidro,3389.0,tiempo_real
-2026-11-05,Paute,hidro,687.0,tiempo_real
-2026-11-05,San Francisco,hidro,1835.0,tiempo_real
-2026-11-05,Sopladora,hidro,382.0,tiempo_real
-2026-11-05,Gas Natural,otra,984.0,tiempo_real
-2026-11-05,Renovable,otra,166.0,tiempo_real
-2026-11-05,Térmica,otra,13163.0,tiempo_real
+2026-11-04,Agoyán,hidro,2379.0,validado
+2026-11-04,Coca Codo,hidro,21421.0,validado
+2026-11-04,Delsitanisagua,hidro,2533.0,validado
+2026-11-04,Mazar,hidro,656.0,validado
+2026-11-04,Minas San Francisco,hidro,4956.0,validado
+2026-11-04,Otras Hidro,hidro,25076.0,validado
+2026-11-04,Paute,hidro,5603.0,validado
+2026-11-04,San Francisco,hidro,3294.0,validado
+2026-11-04,Sopladora,hidro,3276.0,validado
+2026-11-04,Gas Natural,otra,2087.0,validado
+2026-11-04,Renovable,otra,561.0,validado
+2026-11-04,Térmica,otra,25943.0,validado
+2026-11-05,Agoyán,hidro,1362.0,tiempo_real
+2026-11-05,Coca Codo,hidro,10803.0,tiempo_real
+2026-11-05,Delsitanisagua,hidro,1330.0,tiempo_real
+2026-11-05,Minas San Francisco,hidro,3524.0,tiempo_real
+2026-11-05,Paute,hidro,958.0,tiempo_real
+2026-11-05,San Francisco,hidro,1917.0,tiempo_real
+2026-11-05,Sopladora,hidro,543.0,tiempo_real
+2026-11-05,Gas Natural,otra,1023.0,tiempo_real
+2026-11-05,Renovable,otra,194.0,tiempo_real
+2026-11-05,Térmica,otra,13614.0,tiempo_real
