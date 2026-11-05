@@ -330,7 +330,7 @@ anual,2026,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,exportacion,total,86
 anual,2026,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,hidraulica,total,69193.6,69194.0,-0.4,,comprobacion,cuadra
 anual,2026,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,importacion,total,254.8,255.0,-0.2,,comprobacion,cuadra
 anual,2026,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,no_convencional,total,561.1,561.0,0.1,,comprobacion,cuadra
-anual,2026,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,termica,total,28029.6,28030.0,-0.4,,comprobacion,cuadra
+anual,2026,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,termica,total,29184.6,28030.0,1154.6,,comprobacion,no cuadra (tolerancia ±2.5 MWh)
 mensual,2026-11,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,exportacion,total,86.0,86.0,0.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,hidraulica,total,69194.0,69194.0,0.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,importacion,total,255.0,255.0,0.0,,comprobacion,cuadra
