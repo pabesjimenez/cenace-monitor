@@ -349,7 +349,7 @@ mensual,2026-11,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,Gas Natural,otr
 mensual,2026-11,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,Renovable,otra,561.0,561.0,0.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-03,2026-11-04,2026-11-04,2026-11-04,1,0,,Térmica,otra,25943.0,25943.0,0.0,,comprobacion,cuadra
 anual,2026,2026-11-04,2026-11-05,2026-11-05,2026-11-05,1,0,,exportacion,total,77.0,77.0,0.0,,comprobacion,cuadra
-anual,2026,2026-11-04,2026-11-05,2026-11-05,2026-11-05,1,0,,hidraulica,total,74489.2,74489.0,0.2,,comprobacion,cuadra
+anual,2026,2026-11-04,2026-11-05,2026-11-05,2026-11-05,1,0,,hidraulica,total,74491.9,74489.0,2.9,,comprobacion,no cuadra (tolerancia ±2.5 MWh)
 anual,2026,2026-11-04,2026-11-05,2026-11-05,2026-11-05,1,0,,importacion,total,107.6,108.0,-0.4,,comprobacion,cuadra
 anual,2026,2026-11-04,2026-11-05,2026-11-05,2026-11-05,1,0,,no_convencional,total,482.0,482.0,0.0,,comprobacion,cuadra
 anual,2026,2026-11-04,2026-11-05,2026-11-05,2026-11-05,1,0,,termica,total,25604.8,25605.0,-0.2,,comprobacion,cuadra
