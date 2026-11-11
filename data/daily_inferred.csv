@@ -440,3 +440,26 @@ mensual,2026-11,2026-11-08,2026-11-09,2026-11-09,2026-11-09,1,0,,Sopladora,hidro
 mensual,2026-11,2026-11-08,2026-11-09,2026-11-09,2026-11-09,1,0,,Gas Natural,otra,2283.0,2282.0,1.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-08,2026-11-09,2026-11-09,2026-11-09,1,0,,Renovable,otra,1241.0,1242.0,-1.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-08,2026-11-09,2026-11-09,2026-11-09,1,0,,Térmica,otra,25861.0,25862.0,-1.0,,comprobacion,cuadra
+anual,2026,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,exportacion,total,13.9,14.0,-0.1,,comprobacion,cuadra
+anual,2026,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,hidraulica,total,72772.7,72773.0,-0.3,,comprobacion,cuadra
+anual,2026,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,importacion,total,5061.0,5061.0,-0.0,,comprobacion,cuadra
+anual,2026,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,no_convencional,total,1287.0,1287.0,0.0,,comprobacion,cuadra
+anual,2026,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,termica,total,28777.1,28777.0,0.1,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,exportacion,total,14.0,14.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,hidraulica,total,72773.0,72773.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,importacion,total,5061.0,5061.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,no_convencional,total,1288.0,1287.0,1.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,produccion_total,total,107898.0,107898.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,termica,total,28777.0,28777.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Agoyán,hidro,2388.0,2388.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Coca Codo,hidro,19416.0,19416.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Delsitanisagua,hidro,2875.0,2876.0,-1.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Mazar,hidro,780.0,780.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Minas San Francisco,hidro,1534.0,1534.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Otras Hidro,hidro,25092.0,25092.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Paute,hidro,11129.0,11129.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,San Francisco,hidro,3348.0,3348.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Sopladora,hidro,6212.0,6212.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Gas Natural,otra,3145.0,3145.0,0.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Renovable,otra,1288.0,1287.0,1.0,,comprobacion,cuadra
+mensual,2026-11,2026-11-09,2026-11-10,2026-11-10,2026-11-10,1,0,,Térmica,otra,25632.0,25632.0,0.0,,comprobacion,cuadra
