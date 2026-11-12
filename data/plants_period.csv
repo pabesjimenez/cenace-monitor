@@ -1,16 +1,16 @@
 period_type,period,plant,group,value,unit,as_of_text,updated_at_local
-annual,2026,Agoyán,hidro,792.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Coca Codo,hidro,7183.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Delsitanisagua,hidro,950.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Gas Natural,otra,635.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Mazar,hidro,619.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Minas San Francisco,hidro,944.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Otras Hidro,hidro,6183.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Paute,hidro,4503.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Renovable,otra,349.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,San Francisco,hidro,1070.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Sopladora,hidro,2328.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
-annual,2026,Térmica,otra,6201.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:05
+annual,2026,Agoyán,hidro,792.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Coca Codo,hidro,7183.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Delsitanisagua,hidro,950.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Gas Natural,otra,635.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Mazar,hidro,619.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Minas San Francisco,hidro,944.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Otras Hidro,hidro,6183.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Paute,hidro,4503.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Renovable,otra,349.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,San Francisco,hidro,1070.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Sopladora,hidro,2328.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
+annual,2026,Térmica,otra,6201.0,GWh,2026 (hasta el día 10 de noviembre),2026-11-12 05:35
 monthly,2026-10,Agoyán,hidro,56396.0,MWh,Octubre de 2026 (hasta el día 29),2026-11-04 10:35
 monthly,2026-10,Coca Codo,hidro,564205.0,MWh,Octubre de 2026 (hasta el día 29),2026-11-04 10:35
 monthly,2026-10,Delsitanisagua,hidro,83981.0,MWh,Octubre de 2026 (hasta el día 29),2026-11-04 10:35
@@ -23,15 +23,15 @@ monthly,2026-10,Renovable,otra,18005.0,MWh,Octubre de 2026 (hasta el día 29),20
 monthly,2026-10,San Francisco,hidro,78155.0,MWh,Octubre de 2026 (hasta el día 29),2026-11-04 10:35
 monthly,2026-10,Sopladora,hidro,180063.0,MWh,Octubre de 2026 (hasta el día 29),2026-11-04 10:35
 monthly,2026-10,Térmica,otra,687530.0,MWh,Octubre de 2026 (hasta el día 29),2026-11-04 10:35
-monthly,2026-11,Agoyán,hidro,22226.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Coca Codo,hidro,217255.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Delsitanisagua,hidro,26132.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Gas Natural,otra,21771.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Mazar,hidro,8155.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Minas San Francisco,hidro,32064.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Otras Hidro,hidro,254123.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Paute,hidro,74104.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Renovable,otra,7361.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,San Francisco,hidro,31244.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Sopladora,hidro,42781.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
-monthly,2026-11,Térmica,otra,236039.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:05
+monthly,2026-11,Agoyán,hidro,22226.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Coca Codo,hidro,217255.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Delsitanisagua,hidro,26132.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Gas Natural,otra,21771.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Mazar,hidro,8155.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Minas San Francisco,hidro,32064.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Otras Hidro,hidro,254123.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Paute,hidro,74104.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Renovable,otra,7361.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,San Francisco,hidro,31244.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Sopladora,hidro,42781.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
+monthly,2026-11,Térmica,otra,236039.0,MWh,Noviembre de 2026 (hasta el día 10),2026-11-12 05:35
