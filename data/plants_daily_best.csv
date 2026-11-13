@@ -317,25 +317,26 @@ date,plant,group,mwh,source
 2026-11-11,Gas Natural,otra,3215.0,validado
 2026-11-11,Renovable,otra,1292.0,validado
 2026-11-11,Térmica,otra,25484.0,validado
-2026-11-12,Agoyán,hidro,2159.0,tiempo_real
-2026-11-12,Coca Codo,hidro,19257.0,tiempo_real
-2026-11-12,Delsitanisagua,hidro,2373.0,tiempo_real
-2026-11-12,Mazar,hidro,2632.0,tiempo_real
-2026-11-12,Minas San Francisco,hidro,926.0,tiempo_real
-2026-11-12,Paute,hidro,16163.0,tiempo_real
-2026-11-12,San Francisco,hidro,3046.0,tiempo_real
-2026-11-12,Sopladora,hidro,9540.0,tiempo_real
-2026-11-12,Gas Natural,otra,3077.0,tiempo_real
-2026-11-12,Renovable,otra,1198.0,tiempo_real
-2026-11-12,Térmica,otra,26345.0,tiempo_real
-2026-11-13,Agoyán,hidro,1053.0,tiempo_real
-2026-11-13,Coca Codo,hidro,10140.0,tiempo_real
-2026-11-13,Delsitanisagua,hidro,1144.0,tiempo_real
-2026-11-13,Mazar,hidro,915.0,tiempo_real
-2026-11-13,Minas San Francisco,hidro,394.0,tiempo_real
-2026-11-13,Paute,hidro,6197.0,tiempo_real
-2026-11-13,San Francisco,hidro,1498.0,tiempo_real
-2026-11-13,Sopladora,hidro,3669.0,tiempo_real
-2026-11-13,Gas Natural,otra,1661.0,tiempo_real
-2026-11-13,Renovable,otra,462.0,tiempo_real
-2026-11-13,Térmica,otra,14172.0,tiempo_real
+2026-11-12,Agoyán,hidro,2112.0,validado
+2026-11-12,Coca Codo,hidro,18862.0,validado
+2026-11-12,Delsitanisagua,hidro,2327.0,validado
+2026-11-12,Mazar,hidro,2577.0,validado
+2026-11-12,Minas San Francisco,hidro,912.0,validado
+2026-11-12,Otras Hidro,hidro,22500.0,validado
+2026-11-12,Paute,hidro,15908.0,validado
+2026-11-12,San Francisco,hidro,2993.0,validado
+2026-11-12,Sopladora,hidro,9327.0,validado
+2026-11-12,Gas Natural,otra,3208.0,validado
+2026-11-12,Renovable,otra,1197.0,validado
+2026-11-12,Térmica,otra,25533.0,validado
+2026-11-13,Agoyán,hidro,1109.0,tiempo_real
+2026-11-13,Coca Codo,hidro,10534.0,tiempo_real
+2026-11-13,Delsitanisagua,hidro,1199.0,tiempo_real
+2026-11-13,Mazar,hidro,983.0,tiempo_real
+2026-11-13,Minas San Francisco,hidro,439.0,tiempo_real
+2026-11-13,Paute,hidro,6605.0,tiempo_real
+2026-11-13,San Francisco,hidro,1580.0,tiempo_real
+2026-11-13,Sopladora,hidro,3910.0,tiempo_real
+2026-11-13,Gas Natural,otra,1725.0,tiempo_real
+2026-11-13,Renovable,otra,484.0,tiempo_real
+2026-11-13,Térmica,otra,14724.0,tiempo_real
