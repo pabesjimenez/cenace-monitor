@@ -1,13 +1,13 @@
 {
- "built_at_utc": "2026-11-14T05:05:22Z",
- "size_bytes": 18984960,
+ "built_at_utc": "2026-11-14T05:35:20Z",
+ "size_bytes": 18997248,
  "first_capture_local": "2026-10-18 22:35",
- "last_capture_local": "2026-11-14 00:05",
+ "last_capture_local": "2026-11-14 00:35",
  "tables": {
-  "curve_realtime": 1296,
+  "curve_realtime": 1297,
   "curve_daily": 1152,
-  "snapshots": 1201,
-  "demand_by_company": 22819,
+  "snapshots": 1202,
+  "demand_by_company": 22838,
   "plants_realtime": 302,
   "plants_daily": 284,
   "plants_daily_best": 351,
@@ -20,8 +20,8 @@
   "monthly_asof": 429,
   "annual_asof": 105,
   "daily_inferred": 510,
-  "observations": 70654,
-  "captures": 1201
+  "observations": 70705,
+  "captures": 1202
  },
  "views": [
   "v_curve_best",
@@ -31,7 +31,7 @@
   "v_plant_monthly"
  ],
  "revisions": {
-  "realtime_values": 9072,
+  "realtime_values": 9079,
   "revised_values": 0,
   "max_abs_change_mw": 0
  }
