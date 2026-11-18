@@ -1,7 +1,7 @@
 {
- "scraped_at_utc": "2026-11-18T02:05:23Z",
- "scraped_at_local": "2026-11-17 21:05",
- "page_last_modified": "Wed, 18 Nov 2026 02:01:31 GMT",
+ "scraped_at_utc": "2026-11-18T02:35:32Z",
+ "scraped_at_local": "2026-11-17 21:35",
+ "page_last_modified": "Wed, 18 Nov 2026 02:31:33 GMT",
  "source": "https://www.cenace.gob.ec/info-operativa/InformacionOperativa.htm",
  "tabs": {
   "realtime": {
@@ -9,27 +9,27 @@
    "date": "2026-11-17",
    "unit": "MWh",
    "kpis": {
-    "produccion_total": 94716.0,
-    "exportacion": 106.0,
+    "produccion_total": 97045.0,
+    "exportacion": 115.0,
     "importacion": 273.0,
-    "hidraulica": 68101.0,
-    "termica": 25860.0,
-    "no_convencional": 542.0
+    "hidraulica": 69814.0,
+    "termica": 26482.0,
+    "no_convencional": 546.0
    },
    "plants": {
-    "Coca Codo": 15561.0,
-    "Paute": 14354.0,
-    "Sopladora": 8212.0,
-    "San Francisco": 2251.0,
-    "Delsitanisagua": 2179.0,
-    "Mazar": 1787.0,
-    "Agoyán": 1624.0,
-    "Minas San Francisco": 1369.0
+    "Coca Codo": 15922.0,
+    "Paute": 14717.0,
+    "Sopladora": 8431.0,
+    "San Francisco": 2298.0,
+    "Delsitanisagua": 2268.0,
+    "Mazar": 1850.0,
+    "Agoyán": 1658.0,
+    "Minas San Francisco": 1399.0
    },
    "other_generation": {
-    "Térmica": 23166.0,
-    "Gas Natural": 2694.0,
-    "Renovable": 542.0
+    "Térmica": 23723.0,
+    "Gas Natural": 2758.0,
+    "Renovable": 546.0
    },
    "curve": {
     "times": [
@@ -127,7 +127,7 @@
       3489.85,
       3467.278,
       3444.696,
-      null,
+      3407.713,
       null,
       null,
       null,
@@ -177,7 +177,7 @@
       11.832,
       8.827,
       7.682,
-      null,
+      7.125,
       null,
       null,
       null,
@@ -227,7 +227,7 @@
       50.069,
       25.846,
       0.0,
-      null,
+      0.0,
       null,
       null,
       null,
@@ -277,7 +277,7 @@
       1244.029,
       1233.303,
       1241.036,
-      null,
+      1243.168,
       null,
       null,
       null,
@@ -327,7 +327,7 @@
       0.0,
       0.0,
       28.924,
-      null,
+      18.076,
       null,
       null,
       null,
@@ -377,7 +377,7 @@
       4795.779,
       4735.253,
       4722.338,
-      null,
+      4676.083,
       null,
       null,
       null,
@@ -427,7 +427,7 @@
       4795.779,
       4735.253,
       4693.414,
-      null,
+      4658.007,
       null,
       null,
       null,
@@ -438,10 +438,10 @@
    "companies": {},
    "pie": {
     "importacion": 272.625485,
-    "hidraulica": 68101.348267,
-    "termica": 25859.945129,
-    "no_convencional": 542.241639,
-    "exportacion": 106.176495
+    "hidraulica": 69814.242798,
+    "termica": 26481.529297,
+    "no_convencional": 545.804194,
+    "exportacion": 115.214494
    },
    "note": null
   },
@@ -450,38 +450,38 @@
    "date": "2026-11-17",
    "unit": "MW",
    "kpis": {
-    "demanda_total": 4420.0,
-    "demanda_anterior": 4466.0,
-    "demanda_cnel": 3082.0,
-    "demanda_empresas": 1338.0
+    "demanda_total": 4384.0,
+    "demanda_anterior": 4419.0,
+    "demanda_cnel": 3089.0,
+    "demanda_empresas": 1295.0
    },
    "plants": {},
    "other_generation": {},
    "curve": null,
    "companies": {
-    "E.E. AZOGUES": 19.398,
-    "CNEL BOLÍVAR": 21.119,
-    "E.E. RIOBAMBA": 76.727,
-    "ELEPCO": 90.44,
-    "E.E. REGIONAL SUR": 109.084,
-    "CNEL SANTA ELENA": 111.994,
-    "CNEL LOS RÍOS": 112.888,
-    "CNEL ESMERALDAS": 114.907,
-    "CNEL SUCUMBÍOS": 119.985,
-    "EMELNORTE": 123.553,
-    "E.E. AMBATO": 130.142,
-    "CNEL SANTO DOMINGO": 163.885,
-    "CNEL MILAGRO": 178.026,
-    "E.E. CENTRO SUR": 203.391,
-    "CNEL EL ORO": 258.843,
-    "CNEL GUAYAS LOS RÍOS": 414.421,
-    "CNEL MANABÍ": 441.95,
-    "E.E. QUITO": 585.206,
-    "CNEL GUAYAQUIL": 1144.465
+    "E.E. AZOGUES": 19.417,
+    "CNEL BOLÍVAR": 19.802,
+    "E.E. RIOBAMBA": 72.805,
+    "ELEPCO": 85.871,
+    "E.E. REGIONAL SUR": 104.26,
+    "CNEL SANTA ELENA": 110.933,
+    "CNEL LOS RÍOS": 110.942,
+    "CNEL ESMERALDAS": 114.305,
+    "EMELNORTE": 116.081,
+    "CNEL SUCUMBÍOS": 117.536,
+    "E.E. AMBATO": 123.857,
+    "CNEL SANTO DOMINGO": 158.883,
+    "CNEL MILAGRO": 178.134,
+    "E.E. CENTRO SUR": 197.168,
+    "CNEL EL ORO": 252.488,
+    "CNEL GUAYAS LOS RÍOS": 427.344,
+    "CNEL MANABÍ": 437.158,
+    "E.E. QUITO": 575.828,
+    "CNEL GUAYAQUIL": 1161.103
    },
    "pie": {
-    "cnel": 3082.483603,
-    "electricas": 1337.940779
+    "cnel": 3088.628363,
+    "electricas": 1295.288174
    },
    "note": null
   },
