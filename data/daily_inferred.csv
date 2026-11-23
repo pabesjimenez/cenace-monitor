@@ -674,13 +674,13 @@ anual,2026,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,0,,exportacion,total,20
 anual,2026,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,0,,hidraulica,total,130705.8,130706.0,-0.2,,comprobacion,cuadra
 anual,2026,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,0,,importacion,total,192.2,192.0,0.2,,comprobacion,cuadra
 anual,2026,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,0,,no_convencional,total,1068.7,1068.0,0.7,,comprobacion,cuadra
-anual,2026,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,0,,termica,total,56328.0,56328.0,-0.0,,comprobacion,cuadra
+anual,2026,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,0,,termica,total,56325.5,56326.0,-0.5,,comprobacion,cuadra
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,exportacion,total,203.0,103.0,100.0,96.0,validado_mensual,derivado del acumulado mensual
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,hidraulica,total,130706.0,62642.0,68064.0,69240.0,validado_mensual,derivado del acumulado mensual
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,importacion,total,192.0,96.0,96.0,92.0,validado_mensual,derivado del acumulado mensual
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,no_convencional,total,1068.0,478.0,590.0,572.0,validado_mensual,derivado del acumulado mensual
-mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,produccion_total,total,188295.0,91491.0,96804.0,98984.0,validado_mensual,derivado del acumulado mensual
-mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,termica,total,56328.0,28276.0,28052.0,28940.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,produccion_total,total,188293.0,91488.0,96805.0,98984.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,termica,total,56326.0,28273.0,28053.0,28940.0,validado_mensual,derivado del acumulado mensual
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,Agoyán,hidro,4686.0,2255.0,2431.0,2480.0,validado_mensual,derivado del acumulado mensual
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,Coca Codo,hidro,32009.0,17515.0,14494.0,14830.0,validado_mensual,derivado del acumulado mensual
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,Delsitanisagua,hidro,4594.0,2313.0,2281.0,2333.0,validado_mensual,derivado del acumulado mensual
@@ -692,4 +692,4 @@ mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,San F
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,Sopladora,hidro,10253.0,3876.0,6377.0,6518.0,validado_mensual,derivado del acumulado mensual
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,Gas Natural,otra,6239.0,3116.0,3123.0,2977.0,validado_mensual,derivado del acumulado mensual
 mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,Renovable,otra,1068.0,478.0,590.0,572.0,validado_mensual,derivado del acumulado mensual
-mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,Térmica,otra,50090.0,25160.0,24930.0,25963.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-20,2026-11-22,2026-11-21,2026-11-22,2,1,2026-11-21,Térmica,otra,50087.0,25157.0,24930.0,25963.0,validado_mensual,derivado del acumulado mensual
