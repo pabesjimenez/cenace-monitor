@@ -647,26 +647,26 @@ mensual,2026-11,2026-11-17,2026-11-18,2026-11-18,2026-11-18,1,0,,Sopladora,hidro
 mensual,2026-11,2026-11-17,2026-11-18,2026-11-18,2026-11-18,1,0,,Gas Natural,otra,3127.0,3127.0,0.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-17,2026-11-18,2026-11-18,2026-11-18,1,0,,Renovable,otra,417.0,417.0,0.0,,comprobacion,cuadra
 mensual,2026-11,2026-11-17,2026-11-18,2026-11-18,2026-11-18,1,0,,Térmica,otra,24363.0,24363.0,0.0,,comprobacion,cuadra
-anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,exportacion,total,52.1,52.0,0.1,41.0,rechazado,difiere -100.0 % del tiempo real
-anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,hidraulica,total,68675.3,68675.0,0.3,79176.0,rechazado,difiere -100.0 % del tiempo real
-anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,importacion,total,1638.6,1639.0,-0.4,74.0,rechazado,difiere -100.0 % del tiempo real
-anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,no_convencional,total,569.5,570.0,-0.5,396.0,rechazado,difiere -100.0 % del tiempo real
-anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,termica,total,27965.7,27966.0,-0.3,28249.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,exportacion,total,52.0,52.0,0.0,41.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,hidraulica,total,68675.0,68675.0,0.0,79176.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,importacion,total,1638.0,1639.0,-1.0,74.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,no_convencional,total,569.0,570.0,-1.0,396.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,produccion_total,total,98849.0,98849.0,0.0,108018.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,termica,total,27966.0,27966.0,0.0,28249.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Agoyán,hidro,2966.0,2966.0,0.0,2851.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Coca Codo,hidro,16070.0,16071.0,-1.0,18394.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Delsitanisagua,hidro,2920.0,2920.0,0.0,3937.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Mazar,hidro,696.0,696.0,0.0,1625.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Minas San Francisco,hidro,4589.0,4589.0,0.0,5223.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Otras Hidro,hidro,23924.0,23924.0,0.0,,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Paute,hidro,8472.0,8472.0,0.0,11440.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,San Francisco,hidro,4084.0,4084.0,0.0,3930.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Sopladora,hidro,4953.0,4953.0,0.0,6778.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Gas Natural,otra,3125.0,3124.0,1.0,2757.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Renovable,otra,569.0,570.0,-1.0,396.0,rechazado,difiere -100.0 % del tiempo real
-mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Térmica,otra,24841.0,24841.0,0.0,25492.0,rechazado,difiere -100.0 % del tiempo real
+anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,0,,exportacion,total,101.2,101.0,0.2,,comprobacion,cuadra
+anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,0,,hidraulica,total,146245.6,146245.0,0.6,,comprobacion,cuadra
+anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,0,,importacion,total,1768.2,1768.0,0.2,,comprobacion,cuadra
+anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,0,,no_convencional,total,966.2,966.0,0.2,,comprobacion,cuadra
+anual,2026,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,0,,termica,total,55491.6,55491.0,0.6,,comprobacion,cuadra
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,exportacion,total,101.0,52.0,49.0,41.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,hidraulica,total,146245.0,68675.0,77570.0,79176.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,importacion,total,1768.0,1639.0,129.0,74.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,no_convencional,total,966.0,570.0,396.0,396.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,produccion_total,total,204471.0,98849.0,105622.0,108018.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,termica,total,55491.0,27966.0,27525.0,28249.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Agoyán,hidro,5745.0,2966.0,2779.0,2851.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Coca Codo,hidro,34037.0,16071.0,17966.0,18394.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Delsitanisagua,hidro,6768.0,2920.0,3848.0,3937.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Mazar,hidro,2303.0,696.0,1607.0,1625.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Minas San Francisco,hidro,9740.0,4589.0,5151.0,5223.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Otras Hidro,hidro,48300.0,23924.0,24376.0,,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Paute,hidro,19809.0,8472.0,11337.0,11440.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,San Francisco,hidro,7931.0,4084.0,3847.0,3930.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Sopladora,hidro,11613.0,4953.0,6660.0,6778.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Gas Natural,otra,5971.0,3124.0,2847.0,2757.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Renovable,otra,966.0,570.0,396.0,396.0,validado_mensual,derivado del acumulado mensual
+mensual,2026-11,2026-11-18,2026-11-20,2026-11-19,2026-11-20,2,1,2026-11-19,Térmica,otra,49520.0,24841.0,24679.0,25492.0,validado_mensual,derivado del acumulado mensual
