@@ -221,3 +221,9 @@ date,variable,tiempo_real_mwh,validado_mwh,diferencia_mwh,diferencia_pct,realtim
 2026-11-25,no_convencional,624.0,603.0,21.0,3.483,2026-11-25 23:35,23:30,validado
 2026-11-25,importacion,0.0,0.0,0.0,,2026-11-25 23:35,23:30,validado
 2026-11-25,exportacion,0.0,0.0,0.0,,2026-11-25 23:35,23:30,validado
+2026-11-26,produccion_total,95944.0,94079.0,1865.0,1.982,2026-11-26 23:35,23:30,validado
+2026-11-26,hidraulica,68069.0,66797.0,1272.0,1.904,2026-11-26 23:35,23:30,validado
+2026-11-26,termica,27118.0,26815.0,303.0,1.13,2026-11-26 23:35,23:30,validado
+2026-11-26,no_convencional,505.0,468.0,37.0,7.906,2026-11-26 23:35,23:30,validado
+2026-11-26,importacion,0.0,0.0,0.0,,2026-11-26 23:35,23:30,validado
+2026-11-26,exportacion,0.0,0.0,0.0,,2026-11-26 23:35,23:30,validado
